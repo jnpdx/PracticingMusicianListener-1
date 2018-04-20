@@ -255,7 +255,8 @@ div.feedbackItem.incorrect_note {
 }
 
 div.feedbackItem.off_note {
-    background-image: url($pm-image-path + "hit-icon.svg");
+    background-image: url($pm-image-path + "miss-icon.svg");
+    /* background-image: url($pm-image-path + "hit-icon.svg"); */
 }
 
 div.feedbackItemContainer {
