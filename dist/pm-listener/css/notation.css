@@ -198,7 +198,8 @@ div.feedbackItem.incorrect_note {
   background-image: url("../images/miss-icon.svg"); }
 
 div.feedbackItem.off_note {
-  background-image: url("../images/hit-icon.svg"); }
+  background-image: url("../images/miss-icon.svg");
+  /* background-image: url($pm-image-path + "hit-icon.svg"); */ }
 
 div.feedbackItemContainer {
   display: none; }
