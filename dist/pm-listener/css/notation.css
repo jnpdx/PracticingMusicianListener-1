@@ -11,6 +11,9 @@ div#notationHeader {
   justify-content: space-around;
   align-items: center; }
 
+span#tuner {
+  width: 130px; }
+
 div#controlsContainer {
   display: flex;
   flex-direction: column; }

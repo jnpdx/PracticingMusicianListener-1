@@ -54,8 +54,11 @@ var PracticingMusician = function (_, Kotlin) {
     console.log('Running with parameters:');
     console.log(parameters);
     Note$Companion_getInstance().createAllNotes();
-    audioAnalyzer.setupMedia();
-    this.tuner = new PMTuner(parameters);
+    this.tuner.audioAnalyzer = audioAnalyzer;
+    this.tuner.run();
+  };
+  ListenerApp.prototype.runBasicTuner = function () {
+    this.tuner = new Tuner();
     this.tuner.audioAnalyzer = audioAnalyzer;
     this.tuner.run();
   };
@@ -85,6 +88,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.alterPreferences(prefs);
     this.exerciseManager.loadExercise();
     this.makeDomElements();
+    this.runBasicTuner();
   };
   ListenerApp.prototype.alterPreferences = function (preferences) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
@@ -2027,10 +2031,11 @@ var PracticingMusician = function (_, Kotlin) {
     }
     return closestNoteValue;
   };
-  function Note$Companion$NoteWithDiff(note, differenceInFreq, differenceInCents) {
+  function Note$Companion$NoteWithDiff(note, differenceInFreq, differenceInCents, tuningDirection) {
     this.note = note;
     this.differenceInFreq = differenceInFreq;
     this.differenceInCents = differenceInCents;
+    this.tuningDirection = tuningDirection;
   }
   Note$Companion$NoteWithDiff.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -2046,21 +2051,25 @@ var PracticingMusician = function (_, Kotlin) {
   Note$Companion$NoteWithDiff.prototype.component3 = function () {
     return this.differenceInCents;
   };
-  Note$Companion$NoteWithDiff.prototype.copy_g3epcr$ = function (note, differenceInFreq, differenceInCents) {
-    return new Note$Companion$NoteWithDiff(note === void 0 ? this.note : note, differenceInFreq === void 0 ? this.differenceInFreq : differenceInFreq, differenceInCents === void 0 ? this.differenceInCents : differenceInCents);
+  Note$Companion$NoteWithDiff.prototype.component4 = function () {
+    return this.tuningDirection;
+  };
+  Note$Companion$NoteWithDiff.prototype.copy_kjeael$ = function (note, differenceInFreq, differenceInCents, tuningDirection) {
+    return new Note$Companion$NoteWithDiff(note === void 0 ? this.note : note, differenceInFreq === void 0 ? this.differenceInFreq : differenceInFreq, differenceInCents === void 0 ? this.differenceInCents : differenceInCents, tuningDirection === void 0 ? this.tuningDirection : tuningDirection);
   };
   Note$Companion$NoteWithDiff.prototype.toString = function () {
-    return 'NoteWithDiff(note=' + Kotlin.toString(this.note) + (', differenceInFreq=' + Kotlin.toString(this.differenceInFreq)) + (', differenceInCents=' + Kotlin.toString(this.differenceInCents)) + ')';
+    return 'NoteWithDiff(note=' + Kotlin.toString(this.note) + (', differenceInFreq=' + Kotlin.toString(this.differenceInFreq)) + (', differenceInCents=' + Kotlin.toString(this.differenceInCents)) + (', tuningDirection=' + Kotlin.toString(this.tuningDirection)) + ')';
   };
   Note$Companion$NoteWithDiff.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.note) | 0;
     result = result * 31 + Kotlin.hashCode(this.differenceInFreq) | 0;
     result = result * 31 + Kotlin.hashCode(this.differenceInCents) | 0;
+    result = result * 31 + Kotlin.hashCode(this.tuningDirection) | 0;
     return result;
   };
   Note$Companion$NoteWithDiff.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.note, other.note) && Kotlin.equals(this.differenceInFreq, other.differenceInFreq) && Kotlin.equals(this.differenceInCents, other.differenceInCents)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.note, other.note) && Kotlin.equals(this.differenceInFreq, other.differenceInFreq) && Kotlin.equals(this.differenceInCents, other.differenceInCents) && Kotlin.equals(this.tuningDirection, other.tuningDirection)))));
   };
   Note$Companion.prototype.closestNoteWithDiff_14dthe$ = function (frequency) {
     var tmp$;
@@ -2068,7 +2077,7 @@ var PracticingMusician = function (_, Kotlin) {
     var closestNote = new Note(-1, 0.0);
     var distanceInCents = 0.0;
     if (frequency < ALL_NOTES.get_za3lpa$(0).getFrequency() * 0.67 || frequency > last(ALL_NOTES).getFrequency() * 1.3) {
-      return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents);
+      return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents, 0);
     }
     tmp$ = ALL_NOTES.iterator();
     while (tmp$.hasNext()) {
@@ -2085,15 +2094,18 @@ var PracticingMusician = function (_, Kotlin) {
     var idealItemFrequency = closestNote.getFrequency();
     var noteAboveFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(closestNote.noteNumber + 1 | 0);
     var noteBelowFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(closestNote.noteNumber - 1 | 0);
+    var tuningDirection = 0;
     if (frequency - idealItemFrequency > 0) {
+      tuningDirection = 1;
       var distanceInHz = noteAboveFrequency - idealItemFrequency;
       distanceInCents = (frequency - idealItemFrequency) / distanceInHz * 100.0;
     }
      else if (frequency - idealItemFrequency < 0) {
+      tuningDirection = -1;
       var distanceInHz_0 = idealItemFrequency - noteBelowFrequency;
       distanceInCents = (idealItemFrequency - frequency) / distanceInHz_0 * 100.0;
     }
-    return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents);
+    return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents, tuningDirection);
   };
   Note$Companion.$metadata$ = {
     kind: Kotlin.Kind.OBJECT,
@@ -2430,6 +2442,62 @@ var PracticingMusician = function (_, Kotlin) {
     kind: Kotlin.Kind.INTERFACE,
     simpleName: 'TimeKeeperAnalyzer',
     interfaces: []
+  };
+  function Tuner() {
+    this.state_5g38l4$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+    this.audioAnalyzer = this.audioAnalyzer;
+    this.timekeeper = new TimeKeeper();
+    this.timekeeper.steppables.add_11rb$(this);
+  }
+  Object.defineProperty(Tuner.prototype, 'state', {
+    get: function () {
+      return this.state_5g38l4$_0;
+    },
+    set: function (state) {
+      this.state_5g38l4$_0 = state;
+    }
+  });
+  Tuner.prototype.setup = function () {
+  };
+  Tuner.prototype.start = function () {
+    this.state = TimeKeeper$TimeKeeperState$Running_getInstance();
+  };
+  Tuner.prototype.stop = function () {
+    this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+  };
+  Tuner.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
+    var tmp$, tmp$_0;
+    var correlatedFrequency = this.audioAnalyzer.updatePitch(timestamp);
+    if (Kotlin.equals(correlatedFrequency, undefined)) {
+      return;
+    }
+    var noteWithDiff = Note$Companion_getInstance().closestNoteWithDiff_14dthe$(correlatedFrequency);
+    var tunerString = {v: ''};
+    var it = (tmp$ = noteWithDiff.note) != null ? tmp$.noteName() : null;
+    if (!Kotlin.equals(it, 'NaN')) {
+      tunerString.v = it + ' ';
+      if (noteWithDiff.differenceInCents > 10.0) {
+        if (noteWithDiff.tuningDirection === 1) {
+          tunerString.v += '+' + Kotlin.toString(noteWithDiff.differenceInCents | 0) + ' SHARP';
+        }
+         else if (noteWithDiff.tuningDirection === -1) {
+          tunerString.v += '-' + Kotlin.toString(noteWithDiff.differenceInCents | 0) + ' FLAT';
+        }
+      }
+    }
+    (tmp$_0 = window.document.getElementById('tuner')) != null ? (tmp$_0.innerHTML = tunerString.v) : null;
+  };
+  Tuner.prototype.run = function () {
+    this.start();
+    this.timekeeper.runForTime = DoubleCompanionObject.MAX_VALUE;
+    this.timekeeper.start();
+  };
+  Tuner.prototype.setInitialOffset_14dthe$ = function (offset) {
+  };
+  Tuner.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'Tuner',
+    interfaces: [TimeKeeperSteppable]
   };
   function BigTest() {
     BigTest_instance = this;
@@ -3146,6 +3214,7 @@ var PracticingMusician = function (_, Kotlin) {
   package$steppable.TimeKeeper = TimeKeeper;
   package$steppable.TimeKeeperSteppable = TimeKeeperSteppable;
   package$steppable.TimeKeeperAnalyzer = TimeKeeperAnalyzer;
+  package$practicingmusician.Tuner = Tuner;
   var package$tests = package$practicingmusician.tests || (package$practicingmusician.tests = {});
   Object.defineProperty(package$tests, 'BigTest', {
     get: BigTest_getInstance
