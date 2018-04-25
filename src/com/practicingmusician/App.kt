@@ -36,7 +36,7 @@ public class ListenerApp {
 
     lateinit var exerciseManager : ExerciseManager
 
-    lateinit var tuner : PMTuner
+    lateinit var tuner : Tuner
 
     @JsName("getTempo")
     fun getTempo() : Double {
@@ -55,9 +55,9 @@ public class ListenerApp {
 
       Note.createAllNotes()
 
-      audioAnalyzer.setupMedia()
+      //audioAnalyzer.setupMedia()
 
-      tuner = PMTuner(parameters)
+      tuner = Tuner(parameters)
       tuner.audioAnalyzer = audioAnalyzer
 
       tuner.run()
