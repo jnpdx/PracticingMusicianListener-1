@@ -11,7 +11,7 @@ import kotlin.browser.window
  * Created by jn on 8/23/17.
  */
 
-class Tuner constructor(val parameters: TunerParameters): TimeKeeperSteppable {
+class Tuner constructor(): TimeKeeperSteppable {
 
   //current state of the Metronome
   override var state = TimeKeeper.TimeKeeperState.Stopped
@@ -19,37 +19,6 @@ class Tuner constructor(val parameters: TunerParameters): TimeKeeperSteppable {
   lateinit var audioAnalyzer : AudioAnalyzer
 
   val timekeeper = TimeKeeper()
-
-  /* State */
-  var longTermNote : Note.Companion.NoteWithDiff? = null //once we pull out the short notes
-    set (value : Note.Companion.NoteWithDiff?) {
-        longTermStartTime = window.performance.now()
-      field = value
-    }
-  var longTermStartTime = 0.0
-
-  var currentNote : Note.Companion.NoteWithDiff? = null
-    set(value : Note.Companion.NoteWithDiff?) {
-      if (field?.note?.noteNumber != value?.note?.noteNumber) {
-        //val noteNum = field?.note?.noteNumber
-        //val time = window.performance.now() - timerStartTime
-        //console.log("$noteNum for $time done")
-        timerStartTime = window.performance.now()
-      } else {
-        if (window.performance.now() - timerStartTime >= parameters.msToIgnore) {
-          if (field?.note?.noteNumber != longTermNote?.note?.noteNumber) {
-            //val time = window.performance.now() - timerStartTime
-            //val noteNum = field?.note?.noteNumber
-            //val oldNoteNum = longTermNote?.note?.noteNumber
-            //console.log("Resetting after $time to $noteNum from $oldNoteNum")
-            this.longTermNote = field
-          }
-        }
-      }
-      field = value
-    }
-  var currentDiff : Double = 0.0
-  var timerStartTime = 0.0
 
   /* End state */
 
@@ -72,25 +41,21 @@ class Tuner constructor(val parameters: TunerParameters): TimeKeeperSteppable {
       val correlatedFrequency = this.audioAnalyzer.updatePitch(timestamp)
 
       if (correlatedFrequency == undefined) {
-        this.currentNote = null
         return
       }
 
       //The closest note to the played frequency
       val noteWithDiff = Note.closestNoteWithDiff(correlatedFrequency)
 
-      //The difference in Hz to the closest note
-      currentDiff = noteWithDiff.differenceInFreq
-
       var tunerString = ""
       noteWithDiff.note?.noteName().let {
         if (it != "NaN") {
           tunerString = it + " "
-          if (noteWithDiff.differenceInCents > 10) {
+          if (noteWithDiff.differenceInCents > 10.0) {
             if (noteWithDiff.tuningDirection == 1) {
-             tunerString += " SHARP"
+             tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
             } else if (noteWithDiff.tuningDirection == -1) {
-             tunerString += " FLAT"
+             tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
             }
           }
 

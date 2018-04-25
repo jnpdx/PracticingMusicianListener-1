@@ -57,9 +57,15 @@ public class ListenerApp {
 
       //audioAnalyzer.setupMedia()
 
-      tuner = Tuner(parameters)
+      //tuner = Tuner(parameters)
       tuner.audioAnalyzer = audioAnalyzer
 
+      tuner.run()
+    }
+
+    fun runBasicTuner() {
+      tuner = Tuner()
+      tuner.audioAnalyzer = audioAnalyzer
       tuner.run()
     }
 
@@ -85,8 +91,6 @@ public class ListenerApp {
 
           this.finishRunApp(parameters)
         })
-
-
     }
 
     fun finishRunApp(parameters: AppSetupParameters) {
@@ -113,6 +117,8 @@ public class ListenerApp {
         this.exerciseManager.loadExercise()
 
         this.makeDomElements()
+
+        this.runBasicTuner()
     }
 
     @JsName("alterPreferences")
