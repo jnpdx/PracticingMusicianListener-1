@@ -82,12 +82,23 @@ class Tuner constructor(val parameters: TunerParameters): TimeKeeperSteppable {
       //The difference in Hz to the closest note
       currentDiff = noteWithDiff.differenceInFreq
 
-      val timeOnCurrentLongNote = ((window.performance.now() - this.longTermStartTime) / 1000.0)
-      val longTermNoteName = longTermNote?.note?.noteName()
-
+      var tunerString = ""
       noteWithDiff.note?.noteName().let {
-        pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
+        if (it != "NaN") {
+          tunerString = it + " "
+          if (noteWithDiff.differenceInCents > 10) {
+            if (noteWithDiff.tuningDirection == 1) {
+             tunerString += " SHARP"
+            } else if (noteWithDiff.tuningDirection == -1) {
+             tunerString += " FLAT"
+            }
+          }
+
+        }
+        //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
       }
+      window.document.getElementById("tuner")?.innerHTML = tunerString
+
 
     }
 

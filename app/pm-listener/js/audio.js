@@ -90,8 +90,6 @@ var AudioAnalyzer = function() {
 
         var ac = this.autoCorrelate( this.buf, this.audioContext.sampleRate );
 
-        console.log(ac)
-
         return ac
     }
 
