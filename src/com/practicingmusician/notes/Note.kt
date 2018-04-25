@@ -99,7 +99,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             return closestNoteValue
         }
 
-        data class NoteWithDiff(val note : Note, val differenceInFreq : Double, val differenceInCents : Double)
+        data class NoteWithDiff(val note : Note, val differenceInFreq : Double, val differenceInCents : Double, val tuningDirection : Int)
 
         fun closestNoteWithDiff(frequency: Double) : NoteWithDiff {
             var closestFrequency = Double.MAX_VALUE
@@ -107,7 +107,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             var distanceInCents = 0.0
 
             if (frequency < ALL_NOTES[0].getFrequency() * 0.67 || frequency > ALL_NOTES.last().getFrequency() * 1.3 ) {
-              return NoteWithDiff(closestNote, closestFrequency, distanceInCents)
+              return NoteWithDiff(closestNote, closestFrequency, distanceInCents, 0)
             }
 
             for (note in ALL_NOTES) {
@@ -124,16 +124,22 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             val noteAboveFrequency = Note.getFrequencyForNoteNumber(closestNote.noteNumber + 1)
             val noteBelowFrequency = Note.getFrequencyForNoteNumber(closestNote.noteNumber - 1)
 
+            var tuningDirection = 0
+
             if (frequency - idealItemFrequency > 0) {
+              //sharp
+              tuningDirection = 1
               val distanceInHz = noteAboveFrequency - idealItemFrequency
               distanceInCents = ((frequency - idealItemFrequency) / distanceInHz) * 100.0
             } else if (frequency - idealItemFrequency < 0) {
+              //flat
+              tuningDirection = -1
               val distanceInHz = idealItemFrequency - noteBelowFrequency
               distanceInCents = ((idealItemFrequency - frequency) / distanceInHz) * 100.0
             }
 
 
-            return NoteWithDiff(closestNote, closestFrequency, distanceInCents)
+            return NoteWithDiff(closestNote, closestFrequency, distanceInCents, tuningDirection)
         }
 
 
