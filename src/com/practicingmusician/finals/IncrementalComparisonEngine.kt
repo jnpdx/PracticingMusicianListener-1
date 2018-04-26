@@ -35,7 +35,7 @@ class IncrementalComparisonEngine {
 
   //Compares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
-  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false, testBeginningBeat : Double = 0.0, testEndingBeat : Double = Double.MAX_VALUE): CompareResults {
+  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning: Boolean = false, testBeginningBeat: Double = 0.0, testEndingBeat: Double = Double.MAX_VALUE): CompareResults {
 
     this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference
     this.largestBeatDifference = listenerApp.parameters.largestBeatDifference
@@ -51,7 +51,7 @@ class IncrementalComparisonEngine {
       //doNotTestBeyond = toTest.last().positionInBeats
     }
     if (!isCurrentlyRunning && toTest.count() > 0) {
-        doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
+      doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
     }
 
     if (testEndingBeat < doNotTestBeyond) {
@@ -106,7 +106,7 @@ class IncrementalComparisonEngine {
       }
 
       if (curBeatPosition >= doNotTestBeyond) {
-        pm_log("Too far ($curBeatPosition vs $doNotTestBeyond)",0)
+        pm_log("Too far ($curBeatPosition vs $doNotTestBeyond)", 0)
         break
       }
 
@@ -150,7 +150,7 @@ class IncrementalComparisonEngine {
 
       var testItem = toTest[indexOnToTest]
 
-      pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration,0)
+      pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration, 0)
 
       if (comparisonFlags.testDuration) {
         //test the durations of the notes
@@ -173,20 +173,20 @@ class IncrementalComparisonEngine {
         //feedbackItemTypes.add(FeedbackMetric(name = "dur.",value = "" + durationDifferenceRatioRounded + " " + testItem.note.duration))
 
         if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
-          pm_log("Test subject too short by " + durationDifferenceRatioRounded,0)
+          pm_log("Test subject too short by " + durationDifferenceRatioRounded, 0)
 
 
           feedbackItemTypes.add(FeedbackMetric("duration", "" + durationDifferenceRatioRounded))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else if (durationDifferenceRatio > (1.0 / listenerApp.parameters.allowableDurationRatio)) {
-          pm_log("Test subject too long by " + durationDifferenceRatioRounded,0)
+          pm_log("Test subject too long by " + durationDifferenceRatioRounded, 0)
 
           feedbackItemTypes.add(FeedbackMetric("duration", "" + Math.abs(durationDifferenceRatioRounded)))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else {
-          pm_log("PERFECT DURATION",0)
+          pm_log("PERFECT DURATION", 0)
         }
 
         //see if the duration is too far outside of the bounds
@@ -197,7 +197,7 @@ class IncrementalComparisonEngine {
 
 
 
-      pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest,10)
+      pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest, 10)
 
       val distanceAway = -(curBeatPosition - toTestBeatPositionAtIndexToTest)
 
@@ -246,7 +246,7 @@ class IncrementalComparisonEngine {
 
 
 
-      pm_log("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency(),0)
+      pm_log("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency(), 0)
 
       //pm_log(idealItem.noteNumber,10)
       //pm_log(testItem.note.noteNumber,10)
@@ -262,8 +262,8 @@ class IncrementalComparisonEngine {
 
       //test for rest vs. note
       if (
-          (testItem.note.noteNumber == -1 && idealItem.noteNumber != -1) ||
-          (testItem.note.noteNumber != -1 && idealItem.noteNumber == -1)
+      (testItem.note.noteNumber == -1 && idealItem.noteNumber != -1) ||
+        (testItem.note.noteNumber != -1 && idealItem.noteNumber == -1)
         ) {
         console.log("MISMATCHED!")
 
