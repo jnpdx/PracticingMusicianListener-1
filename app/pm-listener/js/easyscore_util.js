@@ -68,6 +68,8 @@ var EasyScoreUtil = function() {
 	this.sliderMax = 220
 	this.sliderIncrement = 20
 
+	this.noteToHighlight = -1
+
 	//setup the basic notation stuff
 	this.setupOnElement = function(elementID) {
 
@@ -692,6 +694,12 @@ var EasyScoreUtil = function() {
 
               }
 
+              if (note.id == this.noteToHighlight) {
+                vfNote.setStyle({strokeStyle: '#4990E2', fillStyle: '#4990E2'})
+              } else {
+                vfNote.setStyle({strokeStyle: 'black', fillStyle: 'black'})
+              }
+
               this.notesById[note.id] = vfNote
 
               //console.log("note:")
@@ -879,8 +887,22 @@ var EasyScoreUtil = function() {
 		return ts.currentItem.page
 	}
 
-	//draw the indicator line (blue line that shows current position)
 	this.drawIndicatorLine = function(canvas, beat) {
+	  var beatPositions = this.getElementsForBeat(beat)
+	  var noteId = beatPositions.currentItem.noteId
+
+    if (noteId != this.noteToHighlight) {
+      this.noteToHighlight = noteId
+      this.notateExercise()
+    }
+
+	  console.log("Highlight note id: " + noteId)
+	}
+
+	//draw the indicator line (blue line that shows current position)
+	this.OLD_drawIndicatorLine = function(canvas, beat) {
+
+    //this is where the code will get added to re-notate and color the singular beat
 
 		var indicatorPosition = this.getPositionForBeat(beat)
 
