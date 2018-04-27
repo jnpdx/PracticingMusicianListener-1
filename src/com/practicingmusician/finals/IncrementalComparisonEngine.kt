@@ -176,13 +176,15 @@ class IncrementalComparisonEngine {
           pm_log("Test subject too short by " + durationDifferenceRatioRounded, 0)
 
 
-          feedbackItemTypes.add(FeedbackMetric("duration", "" + durationDifferenceRatioRounded))
+          //feedbackItemTypes.add(FeedbackMetric("duration", "" + durationDifferenceRatioRounded))
+          feedbackItemTypes.add(FeedbackMetric("duration", "SHORT"))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else if (durationDifferenceRatio > (1.0 / listenerApp.parameters.allowableDurationRatio)) {
           pm_log("Test subject too long by " + durationDifferenceRatioRounded, 0)
 
-          feedbackItemTypes.add(FeedbackMetric("duration", "" + Math.abs(durationDifferenceRatioRounded)))
+          //feedbackItemTypes.add(FeedbackMetric("duration", "" + Math.abs(durationDifferenceRatioRounded)))
+          feedbackItemTypes.add(FeedbackMetric("duration", "LONG"))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else {
