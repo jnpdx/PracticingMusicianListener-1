@@ -210,14 +210,15 @@ class IncrementalComparisonEngine {
         if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
           pm_log("Test subject rushing")
 
-          feedbackItemTypes.add(FeedbackMetric("speed", "+" + distanceAwayRounded))
+          feedbackItemTypes.add(FeedbackMetric("speed", "EARLY"))
+          //feedbackItemTypes.add(FeedbackMetric("speed", "+" + distanceAwayRounded))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
           pm_log("Test subject dragging")
 
-
-          feedbackItemTypes.add(FeedbackMetric("speed", "" + distanceAwayRounded))
+          feedbackItemTypes.add(FeedbackMetric("speed", "LATE"))
+          //feedbackItemTypes.add(FeedbackMetric("speed", "" + distanceAwayRounded))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else {
