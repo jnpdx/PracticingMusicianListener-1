@@ -296,7 +296,12 @@ class IncrementalComparisonEngine {
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject sharp")
 
-            feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInHz.toInt()))
+            if (distanceInCents < 50) {
+              feedbackItemTypes.add(FeedbackMetric("pitch", "SHARP"))
+            } else {
+              feedbackItemTypes.add(FeedbackMetric("pitch", testItem.note.noteName()))
+            }
+            //feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInHz.toInt()))
 
 //            console.log("Sharp compared to ideal:")
 //            console.log(idealItem)
@@ -317,7 +322,12 @@ class IncrementalComparisonEngine {
 //            console.log("test:")
 //            console.log(testItem.note)
 
-            feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInHz.toInt()))
+            if (distanceInCents < 50) {
+              feedbackItemTypes.add(FeedbackMetric("pitch", "FLAT"))
+            } else {
+              feedbackItemTypes.add(FeedbackMetric("pitch", testItem.note.noteName()))
+            }
+            //feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInHz.toInt()))
 
             feedbackItem.throwSafeIncorrectSwitch()
           }
