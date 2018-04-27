@@ -237,6 +237,7 @@ public class ListenerApp {
           return
         }
 
+        this.scoreUtil.reset()
 
         exerciseManager.createSteppables()
         exerciseManager.setup()

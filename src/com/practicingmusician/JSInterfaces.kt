@@ -114,6 +114,8 @@ external class EasyScoreUtil  {
 
     fun displayMedal(medalClass : String)
 
+    fun reset()
+
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)

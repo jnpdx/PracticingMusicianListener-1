@@ -70,6 +70,11 @@ var EasyScoreUtil = function() {
 
 	this.noteToHighlight = -1
 
+  this.reset = function() {
+    this.noteToHighlight = -1
+    this.notateExercise()
+  }
+
 	//setup the basic notation stuff
 	this.setupOnElement = function(elementID) {
 
@@ -891,12 +896,11 @@ var EasyScoreUtil = function() {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
 
-    if (noteId != this.noteToHighlight) {
+    if (noteId != this.noteToHighlight && beat >= 0) {
       this.noteToHighlight = noteId
       this.notateExercise()
     }
 
-	  console.log("Highlight note id: " + noteId)
 	}
 
 	//draw the indicator line (blue line that shows current position)
