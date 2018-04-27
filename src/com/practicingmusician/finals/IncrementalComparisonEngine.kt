@@ -276,7 +276,7 @@ class IncrementalComparisonEngine {
             feedbackItemTypes.add(FeedbackMetric("pitch", "Not played"))
           else
             feedbackItemTypes.add(FeedbackMetric("speed","Not played"))
-          
+
         } else {
           feedbackItemTypes.add(FeedbackMetric("duration", "rest"))
         }

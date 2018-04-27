@@ -182,17 +182,6 @@ public class ListenerApp {
     document.getElementById(this.parameters.notationContainerName)?.appendChild(feedbackCanvasObj)
 
     this.makeScore(this.parameters.notationContainerName, this.parameters.controlsContainerName)
-
-//        //for testing
-//            val feedbackItems = listOf(
-//                    FeedbackItem(FeedbackType.Missed,1.0, listOf(FeedbackMetric("test","val"))),
-//                    FeedbackItem(FeedbackType.Incorrect,2.0, listOf(FeedbackMetric("test","val"))),
-//                    FeedbackItem(FeedbackType.Missed,3.0, listOf(FeedbackMetric("test","val")))
-//            )
-//
-//            feedbackItems.forEach {
-//                    listenerApp.addFeedbackItem(it)
-//            }
   }
 
   fun makeScore(containerElementName: String, controlsElementName: String) {
