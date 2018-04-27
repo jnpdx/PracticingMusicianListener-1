@@ -271,7 +271,12 @@ class IncrementalComparisonEngine {
         console.log("MISMATCHED!")
 
         if (idealItem.noteNumber != -1) {
-          feedbackItemTypes.add(FeedbackMetric("pitch", "Not played"))
+
+          if (comparisonFlags.testPitch)
+            feedbackItemTypes.add(FeedbackMetric("pitch", "Not played"))
+          else
+            feedbackItemTypes.add(FeedbackMetric("speed","Not played"))
+          
         } else {
           feedbackItemTypes.add(FeedbackMetric("duration", "rest"))
         }
