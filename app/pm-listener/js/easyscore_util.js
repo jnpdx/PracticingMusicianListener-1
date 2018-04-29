@@ -70,6 +70,7 @@ var EasyScoreUtil = function() {
 
 	this.noteToHighlight = -1
 
+
   this.reset = function() {
     this.noteToHighlight = -1
     this.notateExercise()
@@ -497,7 +498,7 @@ var EasyScoreUtil = function() {
 		return system
 	}
 
-  this.notateExercise = function() {
+  this.notateExercise = function(noteToHighlight) {
 
     var totalBars = this.exercise.systems.reduce(function(total, cur) {
       return total + cur.bars.length
@@ -630,7 +631,7 @@ var EasyScoreUtil = function() {
 
             var curGroup = voice.groups[groupIndex]
 
-            console.log(curGroup)
+            //console.log(curGroup)
 
             var brokenUpNotes = curGroup.notes //[0].split(",")
 
@@ -699,8 +700,15 @@ var EasyScoreUtil = function() {
 
               }
 
-              if (note.id == this.noteToHighlight) {
+              if (note.id == noteToHighlight) {
                 vfNote.setStyle({strokeStyle: '#4990E2', fillStyle: '#4990E2'})
+
+                //redraw in a second with black
+                setTimeout(() => {
+                  console.log("Unhighlight")
+                  //this.noteToHighlight = -1
+                  this.notateExercise()
+                }, 60)
               } else {
                 vfNote.setStyle({strokeStyle: 'black', fillStyle: 'black'})
               }
@@ -898,7 +906,7 @@ var EasyScoreUtil = function() {
 
     if (noteId != this.noteToHighlight && beat >= 0) {
       this.noteToHighlight = noteId
-      this.notateExercise()
+      this.notateExercise(noteId)
     }
 
 	}
