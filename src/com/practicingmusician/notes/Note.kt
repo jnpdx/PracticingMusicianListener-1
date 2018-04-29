@@ -4,7 +4,9 @@ import com.practicingmusician.UserSettings
 import com.practicingmusician.finals.FeedbackMetric
 import com.practicingmusician.finals.listenerApp
 import com.practicingmusician.finals.throwSafeIncorrectSwitch
+import com.practicingmusician.global_transposition
 import com.practicingmusician.pm_log
+import kotlin.browser.window
 import kotlin.js.Math.abs
 import kotlin.js.Math.pow
 
@@ -40,7 +42,7 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
       } else {
         return value % 12
       }
-    }(this.noteNumber)
+    }(this.noteNumber - global_transposition)
 
     if (baseNote >= Note.noteNames.size) {
       console.warn("Invalid note")
