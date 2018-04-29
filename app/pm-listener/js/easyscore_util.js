@@ -712,12 +712,12 @@ var EasyScoreUtil = function() {
                 if (isBlink) {
                   setTimeout(() => {
                     console.log("Unhighlight")
-                    this.notateExercise(noteToHighlight,'red',false)
+                    this.notateExercise(noteToHighlight,'gray',false)
                   }, 50)
                   setTimeout(() => {
                     console.log("Unhighlight")
                     this.notateExercise(noteToHighlight,this.highlightColor,false)
-                  }, 160)
+                  }, 150)
                 }
               } else {
 
@@ -916,9 +916,13 @@ var EasyScoreUtil = function() {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
 
-    if (noteId != this.noteToHighlight && beat >= 0 && beat != this.beatToHighlight) {
+    if (beat >= 0
+        &&
+        (noteId != this.noteToHighlight || Math.floor(beat) != this.beatToHighlight)
+        ) {
+      	  console.log("draw " + beat)
       this.noteToHighlight = noteId
-      this.beatToHighlight = beat
+      this.beatToHighlight = Math.floor(beat)
       this.notateExercise(noteId, this.highlightColor, true)
     }
 
