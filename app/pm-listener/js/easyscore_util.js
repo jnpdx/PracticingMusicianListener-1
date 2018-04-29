@@ -68,10 +68,13 @@ var EasyScoreUtil = function() {
 	this.sliderMax = 220
 	this.sliderIncrement = 20
 
+  this.beatToHighlight = Number.MIN_SAFE_INTEGER
 	this.noteToHighlight = -1
+	this.highlightColor = '#4990E2'
 
 
   this.reset = function() {
+    this.beatToHighlight = Number.MIN_SAFE_INTEGER
     this.noteToHighlight = -1
     this.notateExercise()
   }
@@ -498,7 +501,7 @@ var EasyScoreUtil = function() {
 		return system
 	}
 
-  this.notateExercise = function(noteToHighlight) {
+  this.notateExercise = function(noteToHighlight, noteColor, isBlink = false) {
 
     var totalBars = this.exercise.systems.reduce(function(total, cur) {
       return total + cur.bars.length
@@ -607,7 +610,7 @@ var EasyScoreUtil = function() {
 					//stave.setEndBarType(VF.Barline.type.END)
 				}
 
-
+        stave.setStyle({strokeStyle: 'black', fillStyle: 'black'})
         stave.draw();
 
         var vfVoices = []
@@ -700,18 +703,27 @@ var EasyScoreUtil = function() {
 
               }
 
-              if (note.id == noteToHighlight) {
-                vfNote.setStyle({strokeStyle: '#4990E2', fillStyle: '#4990E2'})
+              //vfNote.setStemStyle({strokeStyle: 'black', fillStyle: 'black'})
 
-                //redraw in a second with black
-                setTimeout(() => {
-                  console.log("Unhighlight")
-                  //this.noteToHighlight = -1
-                  this.notateExercise()
-                }, 60)
+              if (note.id == noteToHighlight) {
+                console.log("highlight")
+                vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
+                vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
+                if (isBlink) {
+                  setTimeout(() => {
+                    console.log("Unhighlight")
+                    this.notateExercise(noteToHighlight,'red',false)
+                  }, 50)
+                  setTimeout(() => {
+                    console.log("Unhighlight")
+                    this.notateExercise(noteToHighlight,this.highlightColor,false)
+                  }, 160)
+                }
               } else {
-                vfNote.setStyle({strokeStyle: 'black', fillStyle: 'black'})
+
               }
+
+
 
               this.notesById[note.id] = vfNote
 
@@ -904,44 +916,12 @@ var EasyScoreUtil = function() {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
 
-    if (noteId != this.noteToHighlight && beat >= 0) {
+    if (noteId != this.noteToHighlight && beat >= 0 && beat != this.beatToHighlight) {
       this.noteToHighlight = noteId
-      this.notateExercise(noteId)
+      this.beatToHighlight = beat
+      this.notateExercise(noteId, this.highlightColor, true)
     }
 
-	}
-
-	//draw the indicator line (blue line that shows current position)
-	this.OLD_drawIndicatorLine = function(canvas, beat) {
-
-    //this is where the code will get added to re-notate and color the singular beat
-
-		var indicatorPosition = this.getPositionForBeat(beat)
-
-		var indicatorOverflow = 20 * this.contentScaleFactor
-
-		var stave = this.getBasicStave()
-		var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
-
-		var topY = indicatorPosition.y - indicatorOverflow
-		var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
-
-		if (canvas.getContext) {
-
-			// use getContext to use the canvas for drawing
-			var ctx = canvas.getContext("2d")
-
-			ctx.strokeStyle = "#4990E2"
-			ctx.lineWidth = 3
-
-			// Stroked path
-			ctx.beginPath()
-			ctx.moveTo(indicatorPosition.x * this.contentScaleFactor, bottomY * this.contentScaleFactor)
-			ctx.lineTo(indicatorPosition.x * this.contentScaleFactor, topY * this.contentScaleFactor)
-			ctx.closePath()
-			ctx.stroke()
-
-		}
 	}
 
 	//get the Y coordinate for feedback items
