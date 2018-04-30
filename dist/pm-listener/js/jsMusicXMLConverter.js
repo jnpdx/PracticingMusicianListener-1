@@ -123,6 +123,8 @@ var jsMusicXMLConverter = function() {
 			return Number(transposition.chromatic)
 		}()
 
+		window.global_transposition = transposition
+
 		//grab the time signature
 		var time_signature = function() {
 			var firstBar = part.measure[0]

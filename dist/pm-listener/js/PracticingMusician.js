@@ -177,6 +177,7 @@ var PracticingMusician = function (_, Kotlin) {
         displayFlashMessages([new FlashMessage('danger', 'Audio not working.  Please make sure you are using either Chrome or Firefox and have enabled microphone access.')]);
         return;
       }
+      this.scoreUtil.reset();
       this.exerciseManager.createSteppables();
       this.exerciseManager.setup();
       this.exerciseManager.loadExercise();
@@ -870,6 +871,7 @@ var PracticingMusician = function (_, Kotlin) {
     return function (it) {
       var tmp$;
       listenerApp.scoreUtil.changePlayButton('stopped');
+      listenerApp.scoreUtil.reset();
       this$ExerciseManager.audioManager.cancelAllAudio();
       this$ExerciseManager.metronome.cancelAllUIUpdates();
       var samplesLength = this$ExerciseManager.pitchTracker.samples.size / 44100.0;
@@ -1750,12 +1752,12 @@ var PracticingMusician = function (_, Kotlin) {
         var durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0;
         if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
           pm_log('Test subject too short by ' + Kotlin.toString(durationDifferenceRatioRounded), 0);
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', '' + Kotlin.toString(durationDifferenceRatioRounded)));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'SHORT'));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else if (durationDifferenceRatio > 1.0 / listenerApp.parameters.allowableDurationRatio) {
           pm_log('Test subject too long by ' + Kotlin.toString(durationDifferenceRatioRounded), 0);
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', '' + Kotlin.toString(Math.abs(durationDifferenceRatioRounded))));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'LONG'));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else {
@@ -1771,12 +1773,12 @@ var PracticingMusician = function (_, Kotlin) {
       if (comparisonFlags.testRhythm) {
         if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
           pm_log('Test subject rushing');
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', '+' + Kotlin.toString(distanceAwayRounded)));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'EARLY'));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
           pm_log('Test subject dragging');
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', '' + Kotlin.toString(distanceAwayRounded)));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'LATE'));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else {
@@ -1806,7 +1808,10 @@ var PracticingMusician = function (_, Kotlin) {
       if (testItem.note.noteNumber === -1 && idealItem.noteNumber !== -1 || (testItem.note.noteNumber !== -1 && idealItem.noteNumber === -1)) {
         console.log('MISMATCHED!');
         if (idealItem.noteNumber !== -1) {
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'Not played'));
+          if (comparisonFlags.testPitch)
+            feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'Not played'));
+          else
+            feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'Not played'));
         }
          else {
           feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'rest'));
@@ -1828,7 +1833,12 @@ var PracticingMusician = function (_, Kotlin) {
           pm_log('Sharp by ' + distanceInHz + ' (' + distanceInCents + ' cents)');
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log('Test subject sharp');
-            feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', '+' + Kotlin.toString(distanceInHz | 0)));
+            if (distanceInCents < 50) {
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'SHARP'));
+            }
+             else {
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', testItem.note.noteName()));
+            }
             throwSafeIncorrectSwitch(feedbackItem);
           }
         }
@@ -1838,7 +1848,12 @@ var PracticingMusician = function (_, Kotlin) {
           pm_log('Flat by ' + distanceInHz_0 + ' (' + distanceInCents_0 + ' cents)');
           if (distanceInCents_0 > listenerApp.parameters.allowableCentsMargin) {
             pm_log('Test subject flat');
-            feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', '-' + Kotlin.toString(distanceInHz_0 | 0)));
+            if (distanceInCents_0 < 50) {
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'FLAT'));
+            }
+             else {
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', testItem.note.noteName()));
+            }
             throwSafeIncorrectSwitch(feedbackItem);
           }
         }
@@ -1975,7 +1990,7 @@ var PracticingMusician = function (_, Kotlin) {
     if (this.noteNumber === -1) {
       return 'NaN';
     }
-    var baseNote = Note$noteName$lambda(this.noteNumber);
+    var baseNote = Note$noteName$lambda(this.noteNumber - global_transposition | 0);
     if (baseNote >= Note$Companion_getInstance().noteNames.length) {
       console.warn('Invalid note');
       return 'NaN';
@@ -2457,6 +2472,14 @@ var PracticingMusician = function (_, Kotlin) {
       this.state_5g38l4$_0 = state;
     }
   });
+  Tuner.prototype.runTunerTest = function () {
+    for (var freq = 380; freq <= 400; freq++) {
+      var noteWithDiff = Note$Companion_getInstance().closestNoteWithDiff_14dthe$(freq);
+      pm_log('Testing note (' + freq + '): ' + noteWithDiff.note.noteName(), 10);
+      pm_log('Diff in hz: ' + Kotlin.toString(noteWithDiff.differenceInFreq), 10);
+      pm_log('Diff in cents: ' + Kotlin.toString(noteWithDiff.differenceInCents), 10);
+    }
+  };
   Tuner.prototype.setup = function () {
   };
   Tuner.prototype.start = function () {
