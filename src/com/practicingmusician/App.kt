@@ -118,7 +118,7 @@ public class ListenerApp {
 
     this.makeDomElements()
 
-    this.runBasicTuner()
+    //this.runBasicTuner()
   }
 
   @JsName("alterPreferences")

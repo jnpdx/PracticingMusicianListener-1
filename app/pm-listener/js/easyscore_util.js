@@ -706,18 +706,19 @@ var EasyScoreUtil = function() {
               //vfNote.setStemStyle({strokeStyle: 'black', fillStyle: 'black'})
 
               if (note.id == noteToHighlight) {
-                console.log("highlight")
-                vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
-                vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
+                //console.log("highlight")
+
                 if (isBlink) {
+                  vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
+                  vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
+
                   setTimeout(() => {
-                    console.log("Unhighlight")
-                    this.notateExercise(noteToHighlight,'gray',false)
-                  }, 50)
-                  setTimeout(() => {
-                    console.log("Unhighlight")
+                    //console.log("Unhighlight")
                     this.notateExercise(noteToHighlight,this.highlightColor,false)
-                  }, 150)
+                  }, 50)
+                } else {
+                  vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
+                  vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
                 }
               } else {
 
@@ -923,7 +924,11 @@ var EasyScoreUtil = function() {
       	  console.log("draw " + beat)
       this.noteToHighlight = noteId
       this.beatToHighlight = Math.floor(beat)
-      this.notateExercise(noteId, this.highlightColor, true)
+      this.notateExercise(
+        noteId,
+        this.highlightColor,
+        beatPositions.currentItem.duration > 1 //only blink if the duration is greater than one beat
+        )
     }
 
 	}
