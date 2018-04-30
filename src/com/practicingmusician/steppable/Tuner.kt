@@ -24,6 +24,17 @@ class Tuner constructor() : TimeKeeperSteppable {
 
   init {
     timekeeper.steppables.add(this)
+    //runTunerTest()
+  }
+
+  fun runTunerTest() {
+    //val freq = 439.0
+    for (freq in 380..400) {
+      val noteWithDiff = Note.closestNoteWithDiff(freq.toDouble())
+      pm_log("Testing note ($freq): " + noteWithDiff.note.noteName(), 10)
+      pm_log("Diff in hz: " + noteWithDiff.differenceInFreq, 10)
+      pm_log("Diff in cents: " + noteWithDiff.differenceInCents, 10)
+    }
   }
 
   fun setup() {}
@@ -62,6 +73,7 @@ class Tuner constructor() : TimeKeeperSteppable {
       }
       //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
     }
+    // "" + (correlatedFrequency * 10.0).toInt() +
     window.document.getElementById("tuner")?.innerHTML = tunerString
 
 
