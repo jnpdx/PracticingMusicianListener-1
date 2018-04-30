@@ -11,61 +11,73 @@ import kotlin.browser.window
  * Created by jn on 8/23/17.
  */
 
-class Tuner constructor(): TimeKeeperSteppable {
+class Tuner constructor() : TimeKeeperSteppable {
 
   //current state of the Metronome
   override var state = TimeKeeper.TimeKeeperState.Stopped
 
-  lateinit var audioAnalyzer : AudioAnalyzer
+  lateinit var audioAnalyzer: AudioAnalyzer
 
   val timekeeper = TimeKeeper()
 
   /* End state */
 
   init {
-      timekeeper.steppables.add(this)
+    timekeeper.steppables.add(this)
+    //runTunerTest()
   }
 
-  fun setup() {   }
+  fun runTunerTest() {
+    //val freq = 439.0
+    for (freq in 380..400) {
+      val noteWithDiff = Note.closestNoteWithDiff(freq.toDouble())
+      pm_log("Testing note ($freq): " + noteWithDiff.note.noteName(), 10)
+      pm_log("Diff in hz: " + noteWithDiff.differenceInFreq, 10)
+      pm_log("Diff in cents: " + noteWithDiff.differenceInCents, 10)
+    }
+  }
 
-    override fun start() {
-        state = TimeKeeper.TimeKeeperState.Running
+  fun setup() {}
+
+  override fun start() {
+    state = TimeKeeper.TimeKeeperState.Running
+  }
+
+  override fun stop() {
+    state = TimeKeeper.TimeKeeperState.Stopped
+  }
+
+  override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
+
+    val correlatedFrequency = this.audioAnalyzer.updatePitch(timestamp)
+
+    if (correlatedFrequency == undefined) {
+      return
     }
 
-    override fun stop() {
-        state = TimeKeeper.TimeKeeperState.Stopped
-    }
+    //The closest note to the played frequency
+    val noteWithDiff = Note.closestNoteWithDiff(correlatedFrequency)
 
-    override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
-
-      val correlatedFrequency = this.audioAnalyzer.updatePitch(timestamp)
-
-      if (correlatedFrequency == undefined) {
-        return
-      }
-
-      //The closest note to the played frequency
-      val noteWithDiff = Note.closestNoteWithDiff(correlatedFrequency)
-
-      var tunerString = ""
-      noteWithDiff.note?.noteName().let {
-        if (it != "NaN") {
-          tunerString = it + " "
-          if (noteWithDiff.differenceInCents > 10.0) {
-            if (noteWithDiff.tuningDirection == 1) {
-             tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
-            } else if (noteWithDiff.tuningDirection == -1) {
-             tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
-            }
+    var tunerString = ""
+    noteWithDiff.note?.noteName().let {
+      if (it != "NaN") {
+        tunerString = it + " "
+        if (noteWithDiff.differenceInCents > 10.0) {
+          if (noteWithDiff.tuningDirection == 1) {
+            tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
+          } else if (noteWithDiff.tuningDirection == -1) {
+            tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
           }
-
         }
-        //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
+
       }
-      window.document.getElementById("tuner")?.innerHTML = tunerString
-
-
+      //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
     }
+    // "" + (correlatedFrequency * 10.0).toInt() +
+    window.document.getElementById("tuner")?.innerHTML = tunerString
+
+
+  }
 
 
   fun run() {

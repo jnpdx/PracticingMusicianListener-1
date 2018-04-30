@@ -14,6 +14,8 @@ import com.practicingmusician.finals.FeedbackType
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
 
+external var global_transposition : Int
+
 data class DialogParams(val modalType : String, val image : String, val message : String, val metric : String)
 
 data class FlashMessage(val type : String, val message : String)
@@ -113,6 +115,8 @@ external class EasyScoreUtil  {
     fun changePlayButton(buttonClass : String)
 
     fun displayMedal(medalClass : String)
+
+    fun reset()
 
     fun setupOnElement(elementID : String)
 
