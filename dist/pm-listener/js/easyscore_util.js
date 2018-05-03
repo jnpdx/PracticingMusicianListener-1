@@ -501,7 +501,10 @@ var EasyScoreUtil = function() {
 		return system
 	}
 
-  this.notateExercise = function(noteToHighlight, noteColor, isBlink = false) {
+  this.notateExercise = function(noteToHighlight, noteColor, isBlink) {
+
+    if (isBlink == undefined)
+      isBlink = false
 
     var totalBars = this.exercise.systems.reduce(function(total, cur) {
       return total + cur.bars.length
@@ -712,7 +715,7 @@ var EasyScoreUtil = function() {
                   vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
                   vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
 
-                  setTimeout(() => {
+                  setTimeout(function() {
                     //console.log("Unhighlight")
                     this.notateExercise(noteToHighlight,this.highlightColor,false)
                   }, 50)
