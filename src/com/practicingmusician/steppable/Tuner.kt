@@ -24,7 +24,7 @@ class Tuner constructor() : TimeKeeperSteppable {
 
   init {
     timekeeper.steppables.add(this)
-    //runTunerTest()
+    runTunerTest()
   }
 
   fun runTunerTest() {
@@ -61,6 +61,13 @@ class Tuner constructor() : TimeKeeperSteppable {
     var tunerString = ""
     noteWithDiff.note?.noteName().let {
       if (it != "NaN") {
+
+        if (noteWithDiff.tuningDirection == 1) {
+          placeTuner(noteWithDiff.differenceInCents.toInt())
+        } else {
+          placeTuner(0 - noteWithDiff.differenceInCents.toInt())
+        }
+
         tunerString = it + " "
         if (noteWithDiff.differenceInCents > 10.0) {
           if (noteWithDiff.tuningDirection == 1) {
@@ -70,8 +77,10 @@ class Tuner constructor() : TimeKeeperSteppable {
           }
         }
 
+      } else {
+        placeTuner(0)
       }
-      //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
+      pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection + " " + noteWithDiff.frequency,10)
     }
     // "" + (correlatedFrequency * 10.0).toInt() +
     window.document.getElementById("tuner")?.innerHTML = tunerString

@@ -98,7 +98,7 @@ var AudioAnalyzer = function() {
 }
 var thresholdAmount = 0.01
 
-var MIN_SAMPLES=0;var GOOD_ENOUGH_CORRELATION=.9;
+var MIN_SAMPLES=0;var GOOD_ENOUGH_CORRELATION=0.9;
 var audioAnalyzer = new AudioAnalyzer()
 
 

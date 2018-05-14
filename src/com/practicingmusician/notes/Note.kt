@@ -103,7 +103,7 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
       return closestNoteValue
     }
 
-    data class NoteWithDiff(val note: Note, val differenceInFreq: Double, val differenceInCents: Double, val tuningDirection: Int)
+    data class NoteWithDiff(val note: Note, val differenceInFreq: Double, val differenceInCents: Double, val tuningDirection: Int, val frequency: Double)
 
     fun closestNoteWithDiff(frequency: Double): NoteWithDiff {
       var closestFrequency = Double.MAX_VALUE
@@ -111,7 +111,7 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
       var distanceInCents = 0.0
 
       if (frequency < ALL_NOTES[0].getFrequency() * 0.67 || frequency > ALL_NOTES.last().getFrequency() * 1.3) {
-        return NoteWithDiff(closestNote, closestFrequency, distanceInCents, 0)
+        return NoteWithDiff(closestNote, closestFrequency, distanceInCents, 0, frequency)
       }
 
       for (note in ALL_NOTES) {
@@ -143,7 +143,7 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
       }
 
 
-      return NoteWithDiff(closestNote, closestFrequency, distanceInCents, tuningDirection)
+      return NoteWithDiff(closestNote, closestFrequency, distanceInCents, tuningDirection, frequency)
     }
 
 
