@@ -8,9 +8,9 @@ var AudioAnalyzer = function() {
     this.errorMessages = []
 
     this.sourceNode = null;
-    this. analyzer = null;
+    this.analyzer = null;
     this.audioContext = null;
-    this.buflen = 1024;
+    this.buflen = 4096;
     this.buf = new Float32Array( this.buflen );
     this.rafID = null;
 
@@ -50,10 +50,10 @@ var AudioAnalyzer = function() {
                 analyzerObj.isFunctional = false
                 displayFlashMessages(
                 [{type:"danger",
-                  message:"Couldn't get access to microphone stream"
+                  message:"Couldn't get access to microphone stream:" + err
                 }]
               )
-
+                console.log(err.stack)
                 pm_log("Error: " + err,10)
             });
     }
@@ -66,12 +66,35 @@ var AudioAnalyzer = function() {
     this.gotStream = function(stream) {
         console.log("Got stream")
         // Create an AudioNode from the stream.
-        mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
 
         // Connect it to the destination.
         this.analyzer = this.audioContext.createAnalyser();
-        this.analyzer.fftSize = 2048;
-        mediaStreamSource.connect( this. analyzer );
+        //this.analyzer.fftSize = 2048;
+        this.scriptProcessor = this.audioContext.createScriptProcessor(4096, 1, 1)
+        this.pitchDetector = new (Module().AubioPitch)(
+          'default', 4096, 1, this.audioContext.sampleRate)
+
+//        mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
+//        mediaStreamSource.connect( this.analyzer );
+
+      this.audioContext.createMediaStreamSource(stream).connect(this.analyzer)
+      this.analyzer.connect(this.scriptProcessor)
+      this.scriptProcessor.connect(this.audioContext.destination)
+
+      this.scriptProcessor.addEventListener('audioprocess', function (event) {
+      var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
+      console.log(frequency)
+//      if (frequency && self.onNoteDetected) {
+//        var note = self.getNote(frequency)
+//        self.onNoteDetected({
+//          name: self.noteStrings[note % 12],
+//          value: note,
+//          cents: self.getCents(frequency, note),
+//          numbered: parseInt(note / 12) - 1,
+//          frequency: frequency,
+//        })
+//      }
+      }.bind(this))
     }
 
     //get the current pitch
