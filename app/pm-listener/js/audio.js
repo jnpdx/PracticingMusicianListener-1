@@ -84,6 +84,7 @@ var AudioAnalyzer = function() {
       this.scriptProcessor.addEventListener('audioprocess', function (event) {
       var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
       console.log(frequency)
+      this.storedPitch = frequency
 //      if (frequency && self.onNoteDetected) {
 //        var note = self.getNote(frequency)
 //        self.onNoteDetected({
@@ -97,8 +98,13 @@ var AudioAnalyzer = function() {
       }.bind(this))
     }
 
+    this.updatePitch = function() {
+      return this.storedPitch
+    }
+    this.storedPitch = -1
+
     //get the current pitch
-    this.updatePitch = function(timestamp) {
+    this.OLD_updatePitch = function(timestamp) {
         if (this.analyzer == null)
             return
 
