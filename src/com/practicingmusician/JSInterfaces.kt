@@ -14,6 +14,8 @@ import com.practicingmusician.finals.FeedbackType
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
 
+external fun placeTuner(position: Int)
+
 external var global_transposition : Int
 
 data class DialogParams(val modalType : String, val image : String, val message : String, val metric : String)

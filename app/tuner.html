@@ -1,45 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Practicing Musician Tuner</title>
 
-    <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
+<div id="note-meter" class="note-meter">
+  <div id="tunerNeedle" class="needle animatedNeedle"></div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <p class='flat'>♭</p>
+  <ul>
 
-    <script type="text/javascript" src="pm-listener/js/logger.js"></script>
+    <li><p>-50</p></li>
+    <li><p>-40</p></li>
+    <li><p>-30</p></li>
+    <li><p>-20</p></li>
+    <li><p>-10</p></li>
+    <li><p>0</p></li>
+    <li><p>10</p></li>
+    <li><p>20</p></li>
+    <li><p>30</p></li>
+    <li><p>40</p></li>
+    <li><p>50</p></li>
 
-    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
-    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
-
-    <script src="pm-listener/js/audio.js"></script>
-
-
-</head>
-<body>
-
-<div id="tunerWindow">
-  <span id="noteName"></span>
-  <span id="diff"></span>
-  <span id="stopwatchTimer"></span>
+  </ul>
+  <p class="sharp">#</p>
+  <div id="tuner_note_label">G#</div>
 </div>
-<script src="pm-listener/js/exercises/CMajorScale.js"></script>
-
-<script type="text/javascript">
-    var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
-
-    window.onload = function() {
-        listenerApp.runTuner({
-          mode: "STOPWATCH",
-          msToIgnore: 100,
-          acceptableCentsRange: 30,
-          noteNameItem: "noteName",
-          diffItem: "diff",
-          stopwatchTimerItem: "stopwatchTimer"
-        })
-    }
-</script>
-
-</body>
-</html>

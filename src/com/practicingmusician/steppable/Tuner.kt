@@ -61,20 +61,22 @@ class Tuner constructor() : TimeKeeperSteppable {
     var tunerString = ""
     noteWithDiff.note?.noteName().let {
       if (it != "NaN") {
-        tunerString = it + " "
-        if (noteWithDiff.differenceInCents > 10.0) {
-          if (noteWithDiff.tuningDirection == 1) {
-            tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
-          } else if (noteWithDiff.tuningDirection == -1) {
-            tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
-          }
+
+        if (noteWithDiff.tuningDirection == 1) {
+          placeTuner(noteWithDiff.differenceInCents.toInt())
+        } else {
+          placeTuner(0 - noteWithDiff.differenceInCents.toInt())
         }
 
+        tunerString = it
+
+      } else {
+        placeTuner(0)
       }
-      //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection,10)
+      //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection + " " + noteWithDiff.frequency,10)
     }
     // "" + (correlatedFrequency * 10.0).toInt() +
-    window.document.getElementById("tuner")?.innerHTML = tunerString
+    window.document.getElementById("tuner_note_label")?.innerHTML = tunerString
 
 
   }

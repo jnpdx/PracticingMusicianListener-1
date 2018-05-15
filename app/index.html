@@ -15,6 +15,7 @@
     <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
     <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
 
+    <script src="pm-listener/js/aubio.js"></script>
     <script src="pm-listener/js/audio.js"></script>
 
     <script src="pm-listener/js/easyscore_util.js"></script>
@@ -165,6 +166,28 @@ span.paginationLink.pageBackward {
     }
 </script>
 
+<div id="note-meter" class="note-meter">
+  <div id="tunerNeedle" class="needle animatedNeedle"></div>
+
+  <p class='flat'>♭</p>
+  <ul>
+
+    <li><p>-50</p></li>
+    <li><p>-40</p></li>
+    <li><p>-30</p></li>
+    <li><p>-20</p></li>
+    <li><p>-10</p></li>
+    <li><p>0</p></li>
+    <li><p>10</p></li>
+    <li><p>20</p></li>
+    <li><p>30</p></li>
+    <li><p>40</p></li>
+    <li><p>50</p></li>
+
+  </ul>
+  <p class="sharp">#</p>
+  <div id="tuner_note_label">G#</div>
+</div>
 
 </body>
 </html>
