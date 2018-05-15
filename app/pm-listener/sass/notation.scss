@@ -530,3 +530,8 @@ div#tuner_note_label {
     font-size: 20px;
 	z-index: 20;
 }
+
+  .animatedNeedle {
+    transition-property: left;
+    transition-duration: 0.3s;
+  }
