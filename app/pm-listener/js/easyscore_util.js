@@ -269,7 +269,7 @@ var EasyScoreUtil = function() {
 		copyrightInfoContainer = document.createElement("div")
 		copyrightInfoContainer.id = "copyrightContainer"
 
-		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b5"
+		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b6"
 
 		notationBody.appendChild(copyrightInfoContainer)
 
