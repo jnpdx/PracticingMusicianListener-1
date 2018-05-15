@@ -68,14 +68,14 @@ class Tuner constructor() : TimeKeeperSteppable {
           placeTuner(0 - noteWithDiff.differenceInCents.toInt())
         }
 
-        tunerString = it + " "
-        if (noteWithDiff.differenceInCents > 10.0) {
-          if (noteWithDiff.tuningDirection == 1) {
-            tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
-          } else if (noteWithDiff.tuningDirection == -1) {
-            tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
-          }
-        }
+        tunerString = it
+//        if (noteWithDiff.differenceInCents > 10.0) {
+//          if (noteWithDiff.tuningDirection == 1) {
+//            tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
+//          } else if (noteWithDiff.tuningDirection == -1) {
+//            tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
+//          }
+//        }
 
       } else {
         placeTuner(0)
@@ -83,7 +83,7 @@ class Tuner constructor() : TimeKeeperSteppable {
       //pm_log(it + " " + noteWithDiff.differenceInCents + " " + noteWithDiff.tuningDirection + " " + noteWithDiff.frequency,10)
     }
     // "" + (correlatedFrequency * 10.0).toInt() +
-    window.document.getElementById("tuner")?.innerHTML = tunerString
+    window.document.getElementById("tuner_note_label")?.innerHTML = tunerString
 
 
   }

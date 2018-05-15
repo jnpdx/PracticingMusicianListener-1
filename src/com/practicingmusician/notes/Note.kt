@@ -52,7 +52,7 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
   }
 
   companion object {
-    val noteNames = arrayOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+    val noteNames = arrayOf("C", "C#", "D", "E♭", "E", "F", "F#", "G", "A♭", "A", "B♭", "B")
 
     //get the note number of a certain frequency
     fun getNoteNumber(frequency: Double): Int {

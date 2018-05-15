@@ -83,18 +83,8 @@ var AudioAnalyzer = function() {
 
       this.scriptProcessor.addEventListener('audioprocess', function (event) {
       var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
-      console.log(frequency)
-      this.storedPitch = frequency
-//      if (frequency && self.onNoteDetected) {
-//        var note = self.getNote(frequency)
-//        self.onNoteDetected({
-//          name: self.noteStrings[note % 12],
-//          value: note,
-//          cents: self.getCents(frequency, note),
-//          numbered: parseInt(note / 12) - 1,
-//          frequency: frequency,
-//        })
-//      }
+        //console.log(frequency)
+        this.storedPitch = frequency
       }.bind(this))
     }
 
