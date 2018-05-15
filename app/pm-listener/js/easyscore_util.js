@@ -269,7 +269,7 @@ var EasyScoreUtil = function() {
 		copyrightInfoContainer = document.createElement("div")
 		copyrightInfoContainer.id = "copyrightContainer"
 
-		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b5"
+		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b6"
 
 		notationBody.appendChild(copyrightInfoContainer)
 
@@ -1030,4 +1030,23 @@ var EasyScoreUtil = function() {
 		document.getElementById("notationPage_page" + pageNum).appendChild(obj)
 	}
 
+}
+
+
+var currentAnimation = null;
+function placeTuner(centsDifferent) {
+  var meterWidth = document.getElementById('note-meter').offsetWidth
+  var tunerPosition = (centsDifferent > 0 ?
+    (50 - (50 - 4.5) * (centsDifferent / -50))
+      :
+    (50 + (50 - 4.5) * (centsDifferent / 50)))
+  var tunerPosPixels = meterWidth * tunerPosition * .01
+  if (Math.abs(centsDifferent) < 5) {
+    document.getElementById('tunerNeedle').classList.add('highlighted')
+    document.getElementById('tunerNeedle').style.backgroundColor = 'green'
+  } else {
+    document.getElementById('tunerNeedle').classList.remove('highlighted')
+    document.getElementById('tunerNeedle').style.backgroundColor = '#496A8B'
+  }
+  document.getElementById('tunerNeedle').style.left = "" + tunerPosition + "%"
 }
