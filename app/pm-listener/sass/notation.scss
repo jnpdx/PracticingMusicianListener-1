@@ -446,6 +446,9 @@ div#tuner_note_label {
   border-right: 11px solid transparent;
   border-top: 22px solid #496A8B
 }
+.note-meter .needle.highlighted:after {
+  border-top: 22px solid green
+}
 .note-meter ul {
   list-style-type: none;
   height: 150px;
@@ -532,6 +535,6 @@ div#tuner_note_label {
 }
 
   .animatedNeedle {
-    transition-property: left;
+    transition-property: left, background-color;
     transition-duration: 0.3s;
   }
