@@ -167,14 +167,30 @@ span.paginationLink.pageBackward {
 </script>
 
 <script>
+    var currentAnimation = null;
 		function placeTuner(centsDifferent) {
-			document.getElementById('tunerNeedle').style.left = "" + (centsDifferent > 0 ?
+		  var meterWidth = document.getElementById('note-meter').offsetWidth
+		  var tunerPosition = (centsDifferent > 0 ?
 				(50 - (50 - 4.5) * (centsDifferent / -50))
 					:
-			 	(50 + (50 - 4.5) * (centsDifferent / 50))) + "%"
+			 	(50 + (50 - 4.5) * (centsDifferent / 50)))
+			var tunerPosPixels = meterWidth * tunerPosition * .01
+			console.log("Animate to: " + tunerPosPixels)
+			if (currentAnimation) {
+			//  currentAnimation.cancel()
+			}
+			currentAnimation = document.getElementById('tunerNeedle').animate([
+        {transform: 'translate(0)'},
+        {transform: 'translateX(' + tunerPosPixels + 'px)'}
+      ], 100)
+      currentAnimation.addEventListener('finish', function() {
+          // Animation has completed or .finish() has been called.
+        document.getElementById('tunerNeedle').style.left = "" + tunerPosition + "%"
+        });
+			//document.getElementById('tunerNeedle').style.left = "" + tunerPosition + "%"
 		}
 </script>
-<div class="note-meter">
+<div id="note-meter" class="note-meter">
   <div id="tunerNeedle" class="needle"></div>
 
   <p class='flat'>♭</p>

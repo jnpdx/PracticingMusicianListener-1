@@ -69,13 +69,6 @@ class Tuner constructor() : TimeKeeperSteppable {
         }
 
         tunerString = it
-//        if (noteWithDiff.differenceInCents > 10.0) {
-//          if (noteWithDiff.tuningDirection == 1) {
-//            tunerString += "+" + noteWithDiff.differenceInCents.toInt() + " SHARP"
-//          } else if (noteWithDiff.tuningDirection == -1) {
-//            tunerString += "-" + noteWithDiff.differenceInCents.toInt() + " FLAT"
-//          }
-//        }
 
       } else {
         placeTuner(0)
