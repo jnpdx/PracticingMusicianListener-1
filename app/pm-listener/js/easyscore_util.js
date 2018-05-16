@@ -706,26 +706,24 @@ var EasyScoreUtil = function() {
 
               }
 
-              //vfNote.setStemStyle({strokeStyle: 'black', fillStyle: 'black'})
 
-              if (note.id == noteToHighlight) {
-                //console.log("highlight")
-
-                if (isBlink) {
-                  vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
-                  vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
-
-                  setTimeout(function() {
-                    //console.log("Unhighlight")
-                    this.notateExercise(noteToHighlight,this.highlightColor,false)
-                  }, 50)
-                } else {
-                  vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
-                  vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
-                }
-              } else {
-
-              }
+//              if (note.id == noteToHighlight) {
+//
+//                if (isBlink) {
+//                  vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
+//                  vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
+//
+//                  setTimeout(function() {
+//                    //console.log("Unhighlight")
+//                    this.notateExercise(noteToHighlight,this.highlightColor,false)
+//                  }, 50)
+//                } else {
+//                  vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
+//                  vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
+//                }
+//              } else {
+//
+//              }
 
 
 
@@ -916,7 +914,38 @@ var EasyScoreUtil = function() {
 		return ts.currentItem.page
 	}
 
+  //draw the indicator line (blue line that shows current position)
 	this.drawIndicatorLine = function(canvas, beat) {
+
+		var indicatorPosition = this.getPositionForBeat(beat)
+
+		var indicatorOverflow = 20 * this.contentScaleFactor
+
+		var stave = this.getBasicStave()
+		var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
+
+		var topY = indicatorPosition.y - indicatorOverflow
+		var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
+
+		if (canvas.getContext) {
+
+			// use getContext to use the canvas for drawing
+			var ctx = canvas.getContext("2d")
+
+			ctx.strokeStyle = "#4990E2"
+			ctx.lineWidth = 3
+
+			// Stroked path
+			ctx.beginPath()
+			ctx.moveTo(indicatorPosition.x * this.contentScaleFactor, bottomY * this.contentScaleFactor)
+			ctx.lineTo(indicatorPosition.x * this.contentScaleFactor, topY * this.contentScaleFactor)
+			ctx.closePath()
+			ctx.stroke()
+
+		}
+	}
+
+	this.drawHighlightedNote = function(canvas, beat) {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
 
