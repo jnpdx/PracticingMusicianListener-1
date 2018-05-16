@@ -272,7 +272,6 @@ public class ListenerApp {
   fun moveToPosition(beat: Double) {
     //clear the previous indicator first
     val indicatorCanvas = document.getElementById("indicatorCanvas") as? HTMLCanvasElement
-    indicatorCanvas?.getContext("2d").asDynamic().clearRect(0, 0, indicatorCanvas?.width, indicatorCanvas?.height);
     this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat))
     this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
   }

@@ -915,7 +915,7 @@ var EasyScoreUtil = function() {
 	}
 
   //draw the indicator line (blue line that shows current position)
-	this.drawIndicatorLine = function(canvas, beat) {
+	this.drawIndicatorLineGraphic = function(canvas, beat) {
 
 		var indicatorPosition = this.getPositionForBeat(beat)
 
@@ -945,7 +945,7 @@ var EasyScoreUtil = function() {
 		}
 	}
 
-	this.drawHighlightedNote = function(canvas, beat) {
+	this.drawIndicatorLine = function(canvas, beat) {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
 
@@ -956,11 +956,11 @@ var EasyScoreUtil = function() {
       	  console.log("draw " + beat)
       this.noteToHighlight = noteId
       this.beatToHighlight = Math.floor(beat)
-      this.notateExercise(
-        noteId,
-        this.highlightColor,
-        beatPositions.currentItem.duration > 1 //only blink if the duration is greater than one beat
-        )
+
+      var isBlink = beatPositions.currentItem.duration > 1
+
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      this.drawIndicatorLineGraphic(canvas, beat)
     }
 
 	}
