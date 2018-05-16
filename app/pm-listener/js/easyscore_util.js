@@ -706,27 +706,6 @@ var EasyScoreUtil = function() {
 
               }
 
-
-//              if (note.id == noteToHighlight) {
-//
-//                if (isBlink) {
-//                  vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
-//                  vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
-//
-//                  setTimeout(function() {
-//                    //console.log("Unhighlight")
-//                    this.notateExercise(noteToHighlight,this.highlightColor,false)
-//                  }, 50)
-//                } else {
-//                  vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
-//                  vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
-//                }
-//              } else {
-//
-//              }
-
-
-
               this.notesById[note.id] = vfNote
 
               //console.log("note:")
@@ -885,7 +864,7 @@ var EasyScoreUtil = function() {
 		}
 
 		return {
-			x: (initialPos + distance * ts.percent),
+			x: initialPos,
 			y: staveYPos,
 			page: ts.currentItem.page
 		}
@@ -958,6 +937,21 @@ var EasyScoreUtil = function() {
       this.beatToHighlight = Math.floor(beat)
 
       var isBlink = beatPositions.currentItem.duration > 1
+
+      var blinkFunction1 = function() {
+            this.drawIndicatorLineGraphic(canvas,beat)
+          }.bind(this)
+
+      var blinkFunction2 = function() {
+          //console.log("Unhighlight")
+          canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+          setTimeout(blinkFunction1,100)
+        }.bind(this)
+
+      if (isBlink) {
+        setTimeout(blinkFunction2, 50)
+      }
+
 
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
       this.drawIndicatorLineGraphic(canvas, beat)
