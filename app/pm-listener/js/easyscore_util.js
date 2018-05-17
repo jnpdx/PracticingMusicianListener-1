@@ -269,7 +269,7 @@ var EasyScoreUtil = function() {
 		copyrightInfoContainer = document.createElement("div")
 		copyrightInfoContainer.id = "copyrightContainer"
 
-		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b6"
+		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b7"
 
 		notationBody.appendChild(copyrightInfoContainer)
 
@@ -706,29 +706,6 @@ var EasyScoreUtil = function() {
 
               }
 
-              //vfNote.setStemStyle({strokeStyle: 'black', fillStyle: 'black'})
-
-              if (note.id == noteToHighlight) {
-                //console.log("highlight")
-
-                if (isBlink) {
-                  vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
-                  vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
-
-                  setTimeout(function() {
-                    //console.log("Unhighlight")
-                    this.notateExercise(noteToHighlight,this.highlightColor,false)
-                  }, 50)
-                } else {
-                  vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
-                  vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
-                }
-              } else {
-
-              }
-
-
-
               this.notesById[note.id] = vfNote
 
               //console.log("note:")
@@ -887,7 +864,7 @@ var EasyScoreUtil = function() {
 		}
 
 		return {
-			x: (initialPos + distance * ts.percent),
+			x: initialPos,
 			y: staveYPos,
 			page: ts.currentItem.page
 		}
@@ -916,6 +893,37 @@ var EasyScoreUtil = function() {
 		return ts.currentItem.page
 	}
 
+  //draw the indicator line (blue line that shows current position)
+	this.drawIndicatorLineGraphic = function(canvas, beat) {
+
+		var indicatorPosition = this.getPositionForBeat(beat)
+
+		var indicatorOverflow = 20 * this.contentScaleFactor
+
+		var stave = this.getBasicStave()
+		var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
+
+		var topY = indicatorPosition.y - indicatorOverflow
+		var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
+
+		if (canvas.getContext) {
+
+			// use getContext to use the canvas for drawing
+			var ctx = canvas.getContext("2d")
+
+			ctx.strokeStyle = "#4990E2"
+			ctx.lineWidth = 3
+
+			// Stroked path
+			ctx.beginPath()
+			ctx.moveTo(indicatorPosition.x * this.contentScaleFactor, bottomY * this.contentScaleFactor)
+			ctx.lineTo(indicatorPosition.x * this.contentScaleFactor, topY * this.contentScaleFactor)
+			ctx.closePath()
+			ctx.stroke()
+
+		}
+	}
+
 	this.drawIndicatorLine = function(canvas, beat) {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
@@ -927,11 +935,26 @@ var EasyScoreUtil = function() {
       	  console.log("draw " + beat)
       this.noteToHighlight = noteId
       this.beatToHighlight = Math.floor(beat)
-      this.notateExercise(
-        noteId,
-        this.highlightColor,
-        beatPositions.currentItem.duration > 1 //only blink if the duration is greater than one beat
-        )
+
+      var isBlink = beatPositions.currentItem.duration > 1
+
+      var blinkFunction1 = function() {
+            this.drawIndicatorLineGraphic(canvas,beat)
+          }.bind(this)
+
+      var blinkFunction2 = function() {
+          //console.log("Unhighlight")
+          canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+          setTimeout(blinkFunction1,100)
+        }.bind(this)
+
+      if (isBlink) {
+        setTimeout(blinkFunction2, 50)
+      }
+
+
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      this.drawIndicatorLineGraphic(canvas, beat)
     }
 
 	}
