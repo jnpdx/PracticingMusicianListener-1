@@ -206,7 +206,6 @@ var PracticingMusician = function (_, Kotlin) {
   ListenerApp.prototype.moveToPosition_14dthe$ = function (beat) {
     var tmp$;
     var indicatorCanvas = Kotlin.isType(tmp$ = document.getElementById('indicatorCanvas'), HTMLCanvasElement) ? tmp$ : null;
-    (indicatorCanvas != null ? indicatorCanvas.getContext('2d') : null).clearRect(0, 0, indicatorCanvas != null ? indicatorCanvas.width : null, indicatorCanvas != null ? indicatorCanvas.height : null);
     this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat));
     this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat);
   };
