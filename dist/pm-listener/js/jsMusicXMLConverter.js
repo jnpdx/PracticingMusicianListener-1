@@ -145,13 +145,10 @@ var jsMusicXMLConverter = function() {
 
 		var comparisonFlags = {
 			testPitch: true,
-			testRhythm: true,
-			testDuration: true,
 		}
 
 		if (isPercussionClef) {
 			comparisonFlags.testPitch = false
-			comparisonFlags.testDuration = false
 		}
 
     //IGNORE DURATION ON SPECIFIC INSTRUMENTS

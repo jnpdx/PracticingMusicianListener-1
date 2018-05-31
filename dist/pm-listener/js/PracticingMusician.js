@@ -886,7 +886,8 @@ var PracticingMusician = function (_, Kotlin) {
       if ((tmp$ = this$ExerciseManager.currentExercise) != null) {
         var this$ExerciseManager_0 = this$ExerciseManager;
         pm_log('Comparing...');
-        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_2k3oz0$(listenerApp.exercise.comparisonFlags, tmp$.notes, notesFromSamplesBuffer);
+        var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
+        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_2k3oz0$(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer);
         listenerApp.clearFeedbackItems();
         var tmp$_1;
         tmp$_1 = results.feedbackItems.iterator();
@@ -962,7 +963,8 @@ var PracticingMusician = function (_, Kotlin) {
     if ((tmp$ = this.currentExercise) != null) {
       pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
       var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
-      var results = this.comparisonEngine.compareNoteArrays_2k3oz0$(listenerApp.exercise.comparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
+      var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
+      var results = this.comparisonEngine.compareNoteArrays_2k3oz0$(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
       listenerApp.clearFeedbackItems();
       var tmp$_0;
       tmp$_0 = results.feedbackItems.iterator();
@@ -2647,6 +2649,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.url_7mvjxd$_0 = '';
     this.xmlUrl_7mvjxd$_0 = 'xmlFile.xml';
     this.audioAssetPath_7mvjxd$_0 = '';
+    this.comparisonFlags_7mvjxd$_0 = new ComparisonFlags(true, true, true);
     this.allowableCentsMargin_7mvjxd$_0 = 40;
     this.allowableRhythmMargin_7mvjxd$_0 = 0.25;
     this.allowableDurationRatio_7mvjxd$_0 = 0.5;
@@ -2702,6 +2705,11 @@ var PracticingMusician = function (_, Kotlin) {
   Object.defineProperty(MockParameters.prototype, 'audioAssetPath', {
     get: function () {
       return this.audioAssetPath_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'comparisonFlags', {
+    get: function () {
+      return this.comparisonFlags_7mvjxd$_0;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'allowableCentsMargin', {

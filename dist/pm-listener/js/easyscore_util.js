@@ -269,9 +269,17 @@ var EasyScoreUtil = function() {
 		copyrightInfoContainer = document.createElement("div")
 		copyrightInfoContainer.id = "copyrightContainer"
 
-		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b7"
-
 		notationBody.appendChild(copyrightInfoContainer)
+
+		var copyRight = document.createElement("span")
+		copyRight.id = "copyRight"
+		copyRight.innerHTML = this.exercise.copyrightInfo
+		copyrightInfoContainer.appendChild(copyRight)
+
+    var versionNumber = document.createElement("span")
+    versionNumber.id = "versionNumber"
+    versionNumber.innerHTML = 'v1.0b8'
+    copyrightInfoContainer.appendChild(versionNumber)
 
 		//remove the old logo, if it exists
 		var logoContainer = document.getElementById("notationPmLogo")
