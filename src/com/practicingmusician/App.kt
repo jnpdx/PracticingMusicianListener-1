@@ -26,7 +26,6 @@ public class ListenerApp {
     UserSettings.setTempo(t, true)
   }
 
-  lateinit var parameterComparisonFlags: ComparisonFlags
 
   lateinit var scoreUtil: EasyScoreUtil
 
@@ -96,8 +95,6 @@ public class ListenerApp {
   }
 
   fun finishRunApp(parameters: AppSetupParameters) {
-
-    this.parameterComparisonFlags = parameters.comparisonFlags
 
     this.audioManager = AudioManager()
 

@@ -92,7 +92,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             currentExercise?.let {
                 pm_log("Comparing...")
 
-                val combinedComparisonFlags = ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameterComparisonFlags.testRhythm, listenerApp.parameterComparisonFlags.testDuration)
+                val combinedComparisonFlags = ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration)
 
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(combinedComparisonFlags,it.notes,notesFromSamplesBuffer)
@@ -221,7 +221,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
             //pm_log("Notes from samples buffer length: " + notesFromSamplesBuffer.count())
 
-            val combinedComparisonFlags = ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameterComparisonFlags.testRhythm, listenerApp.parameterComparisonFlags.testDuration)
+            val combinedComparisonFlags = ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration)
 
             val results = comparisonEngine.compareNoteArrays(combinedComparisonFlags,it.notes,notesFromSamplesBuffer,isCurrentlyRunning = true)
             //pm_log("Results $results")
