@@ -26,6 +26,7 @@ public class ListenerApp {
     UserSettings.setTempo(t, true)
   }
 
+
   lateinit var scoreUtil: EasyScoreUtil
 
   lateinit var exercise: EasyScoreCode

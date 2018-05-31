@@ -35,6 +35,8 @@ class MockParameters : AppSetupParameters {
     //directory in which audio assets are stored
   override  val audioAssetPath : String = ""
 
+  override val comparisonFlags = ComparisonFlags(true,true,true)
+
     //the margins in which a note can vary from the ideal and still be considered acceptable
   override  var allowableCentsMargin : Int = 40
   override  var allowableRhythmMargin : Double = 0.25
