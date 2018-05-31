@@ -55,11 +55,23 @@ div#titleContainer span {
 }
 
 div#copyrightContainer {
-    text-align: center;
+    width: 100%;
     margin-top: 60px;
     font-size: 9px;
     color: #5c5c5c;
     font-weight: 200;
+}
+
+span#copyRight {
+    display: block;
+    text-align: center;
+}
+
+span#versionNumber {
+    display: block;
+    position: absolute;
+    right: 80px;
+    bottom: 0px;
 }
 
 div#notationPmLogo {
