@@ -60,6 +60,8 @@ interface AppSetupParameters {
     //directory in which audio assets are stored
     val audioAssetPath : String
 
+    val comparisonFlags : ComparisonFlags
+
     //path to the XML file to load
     val xmlUrl : String
 
