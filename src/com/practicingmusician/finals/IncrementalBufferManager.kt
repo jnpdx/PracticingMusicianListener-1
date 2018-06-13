@@ -97,7 +97,7 @@ class IncrementalBufferManager {
         //add the last one
         groups.add(curList)
 
-        pm_log("After making pairs: " + (window.performance.now() - functionStartTimestamp))
+        //pm_log("After making pairs: " + (window.performance.now() - functionStartTimestamp))
 
         val lengthOfCollectedPairsInBeats = (collectedPairs.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
 
@@ -210,9 +210,7 @@ class IncrementalBufferManager {
         val lengthOfNotesInBeats = notes.map { it.duration }.reduce { acc, d -> acc + d }
         pm_log("Length of notes in beats: $lengthOfNotesInBeats")
 
-        val functionEndTimestamp = window.performance.now()
-
-        pm_log("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
+        //val functionEndTimestamp = window.performance.now()
 
         //return notes
 

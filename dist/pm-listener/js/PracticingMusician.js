@@ -1429,7 +1429,6 @@
       curNoteNumber.v = element.second;
     }
     groups.add_11rb$(curList.v);
-    pm_log('After making pairs: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
     var destination_1 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(collectedPairs, 10));
     var tmp$_2;
     tmp$_2 = collectedPairs.iterator();
@@ -1660,8 +1659,6 @@
     }
     var lengthOfNotesInBeats = accumulator_4;
     pm_log('Length of notes in beats: ' + lengthOfNotesInBeats);
-    var functionEndTimestamp = window.performance.now();
-    pm_log('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
     return notePlacements;
   };
   IncrementalBufferManager.$metadata$ = {
