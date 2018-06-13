@@ -59,8 +59,6 @@ class IncrementalComparisonEngine {
       doNotTestBeyond = testEndingBeat
     }
 
-    val functionStartTimestamp = window.performance.now()
-
     //console.log("Comparing: ")
     //console.log(ideal)
     //console.log("To:")
@@ -380,10 +378,7 @@ class IncrementalComparisonEngine {
 
     //pm_log("---- Results : " + results.correct + "/" + results.attempted,10)
     //pm_log(results.finalResults.toTypedArray(),10)
-
-    val functionEndTimestamp = window.performance.now()
-
-    pm_log("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
+    
 
     return results
 

@@ -1698,7 +1698,6 @@
     if (testEndingBeat < doNotTestBeyond) {
       doNotTestBeyond = testEndingBeat;
     }
-    var functionStartTimestamp = window.performance.now();
     tmp$ = until(0, ideal.size);
     tmp$_0 = tmp$.first;
     tmp$_1 = tmp$.last;
@@ -1867,8 +1866,6 @@
       curBeatPosition += idealValue.duration;
       results.finalResults.add_11rb$(notePerformance);
     }
-    var functionEndTimestamp = window.performance.now();
-    pm_log('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
     return results;
   };
   IncrementalComparisonEngine.$metadata$ = {
