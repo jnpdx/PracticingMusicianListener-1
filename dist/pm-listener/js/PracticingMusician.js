@@ -884,7 +884,7 @@
         var this$ExerciseManager_0 = this$ExerciseManager;
         pm_log('Comparing...');
         var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
-        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_2k3oz0$(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer);
+        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer);
         listenerApp.clearFeedbackItems();
         var tmp$_1;
         tmp$_1 = results.feedbackItems.iterator();
@@ -961,7 +961,7 @@
       pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
       var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
       var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
-      var results = this.comparisonEngine.compareNoteArrays_2k3oz0$(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
+      var results = this.comparisonEngine.compareNoteArrays(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
       listenerApp.clearFeedbackItems();
       var tmp$_0;
       tmp$_0 = results.feedbackItems.iterator();
@@ -1673,7 +1673,7 @@
     this.largestDurationRatioDifference = 0.0;
     this.largestBeatDifference = 0.0;
   }
-  IncrementalComparisonEngine.prototype.compareNoteArrays_2k3oz0$ = function (comparisonFlags, ideal, toTest, isCurrentlyRunning, testBeginningBeat, testEndingBeat) {
+  IncrementalComparisonEngine.prototype.compareNoteArrays = function (comparisonFlags, ideal, toTest, isCurrentlyRunning, testBeginningBeat, testEndingBeat) {
     if (isCurrentlyRunning === void 0)
       isCurrentlyRunning = false;
     if (testBeginningBeat === void 0)
@@ -2571,7 +2571,7 @@
     expectedResults.attempted = originalNoteObjects.size;
     var comparisonFlags = new ComparisonFlags(false, true, true);
     println('Comparing exact copy...');
-    SliceTest_getInstance().testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(comparisonFlags, originalNoteObjects, copyWithAvgData));
+    SliceTest_getInstance().testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, copyWithAvgData));
     var originalNotesShifted = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     originalNotesShifted.add_11rb$(new Note(-1, 1.0, ''));
     originalNotesShifted.addAll_brywnq$(alteredNotes);
@@ -2582,7 +2582,7 @@
     expectedResults2.correct = 8;
     expectedResults2.attempted = 32;
     console.log('Comparing shifted version');
-    SliceTest_getInstance().testShouldBe_3xie8k$(expectedResults2, incrementalComparison.compareNoteArrays_2k3oz0$(comparisonFlags, originalNoteObjects, shiftedWithAvgData));
+    SliceTest_getInstance().testShouldBe_3xie8k$(expectedResults2, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, shiftedWithAvgData));
   };
   BigTest.prototype.runTest = function (parameters) {
     listenerApp = new ListenerApp();
@@ -2873,7 +2873,7 @@
     expectedResults.correct = 4;
     expectedResults.attempted = 4;
     var incrementalComparison = new IncrementalComparisonEngine();
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.trueIncrementalBufferAndComparisonTest = function () {
   };
@@ -2914,7 +2914,7 @@
       var sublist = copyWithAvgData.subList_vux9f0$(0, index);
       console.log('Sublist:' + Kotlin.toString(sublist.size));
       console.log(sublist);
-      this.testShouldBe_3xie8k$.call(this, new CompareResults(sublist.size, sublist.size), incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, sublist));
+      this.testShouldBe_3xie8k$.call(this, new CompareResults(sublist.size, sublist.size), incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, sublist));
     }
   };
   SliceTest.prototype.exactIncrementalTestInBulk = function () {
@@ -2928,7 +2928,7 @@
     expectedResults.correct = 4;
     expectedResults.attempted = 4;
     var incrementalComparison = new IncrementalComparisonEngine();
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.sharpTest = function () {
     println('****** Beginning sharp test');
@@ -2948,7 +2948,7 @@
     var expectedResults = new CompareResults();
     expectedResults.correct = 3;
     expectedResults.attempted = 4;
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.flatTest = function () {
     println('****** Beginning flat test');
@@ -2968,7 +2968,7 @@
     var expectedResults = new CompareResults();
     expectedResults.correct = 3;
     expectedResults.attempted = 4;
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.rushedTest = function () {
     println('****** Beginning rushed test');
@@ -2982,7 +2982,7 @@
     expectedResults.correct = 2;
     expectedResults.attempted = 4;
     println('Comparing rushed...');
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.shortNotesTest = function () {
     println('****** Beginning short notes test');
@@ -2996,7 +2996,7 @@
     expectedResults.correct = 4;
     expectedResults.attempted = 4;
     println('Comparing short notes...');
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(this.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays(this.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.runTest = function () {
     listenerApp = new ListenerApp();

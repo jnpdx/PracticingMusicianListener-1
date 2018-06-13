@@ -35,6 +35,7 @@ class IncrementalComparisonEngine {
 
   //Compares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
+  @JsName("compareNoteArrays")
   fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning: Boolean = false, testBeginningBeat: Double = 0.0, testEndingBeat: Double = Double.MAX_VALUE): CompareResults {
 
     this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference
