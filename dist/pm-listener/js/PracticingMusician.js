@@ -1671,6 +1671,9 @@
     this.largestDurationRatioDifference = 0.0;
     this.largestBeatDifference = 0.0;
   }
+  IncrementalComparisonEngine.prototype.arrayToList = function (arr) {
+    return toList(arr);
+  };
   IncrementalComparisonEngine.prototype.compareNoteArrays = function (comparisonFlags, ideal, toTest, isCurrentlyRunning, testBeginningBeat, testEndingBeat) {
     if (isCurrentlyRunning === void 0)
       isCurrentlyRunning = false;

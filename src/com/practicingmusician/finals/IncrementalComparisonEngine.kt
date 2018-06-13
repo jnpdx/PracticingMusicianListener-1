@@ -33,6 +33,11 @@ class IncrementalComparisonEngine {
 
   /* End state */
 
+  @JsName("arrayToList")
+  fun js_arrayToList(arr: Array<Note>) : List<Note> {
+    return arr.toList()
+  }
+
   //Compares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
   @JsName("compareNoteArrays")
@@ -378,7 +383,7 @@ class IncrementalComparisonEngine {
 
     //pm_log("---- Results : " + results.correct + "/" + results.attempted,10)
     //pm_log(results.finalResults.toTypedArray(),10)
-    
+
 
     return results
 
