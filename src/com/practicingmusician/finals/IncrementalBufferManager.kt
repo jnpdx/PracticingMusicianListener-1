@@ -39,6 +39,7 @@ class IncrementalBufferManager {
     //This takes samples from the microphone and attempts to convert them into meaningful Notes
     //It attempts to do some smart analysis, including getting rid of short values
     //and then stitching the remaining like-values together
+    @JsName("convertSamplesBufferToNotes")
     fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<NotePlacement> {
 
         this.minDurationInBeats = listenerApp.parameters.minDurationInBeats

@@ -872,7 +872,7 @@
       this$ExerciseManager.metronome.cancelAllUIUpdates();
       var samplesLength = this$ExerciseManager.pitchTracker.samples.size / 44100.0;
       pm_log('Total samples recorded: ' + Kotlin.toString(this$ExerciseManager.pitchTracker.samples.size) + ' length: ' + Kotlin.toString(samplesLength));
-      var notesFromSamplesBuffer = this$ExerciseManager.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this$ExerciseManager.pitchTracker.samples);
+      var notesFromSamplesBuffer = this$ExerciseManager.bufferManager.convertSamplesBufferToNotes(this$ExerciseManager.pitchTracker.samples);
       pm_log('Notes: ');
       var tmp$_0;
       tmp$_0 = notesFromSamplesBuffer.iterator();
@@ -959,7 +959,7 @@
     }
     if ((tmp$ = this.currentExercise) != null) {
       pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
-      var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
+      var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes(this.pitchTracker.samples);
       var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
       var results = this.comparisonEngine.compareNoteArrays(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
       listenerApp.clearFeedbackItems();
@@ -1376,7 +1376,7 @@
     this.sampleRate = 44100.0;
     this.minDurationInBeats = 0.0;
   }
-  IncrementalBufferManager.prototype.convertSamplesBufferToNotes_mtnj1d$ = function (samples) {
+  IncrementalBufferManager.prototype.convertSamplesBufferToNotes = function (samples) {
     this.minDurationInBeats = listenerApp.parameters.minDurationInBeats;
     var positionInSamples = 0;
     var notes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
@@ -2564,7 +2564,7 @@
       }
     }
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(alteredNotes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
     var expectedResults = new CompareResults();
     expectedResults.correct = originalNoteObjects.size;
@@ -2576,7 +2576,7 @@
     originalNotesShifted.add_11rb$(new Note(-1, 1.0, ''));
     originalNotesShifted.addAll_brywnq$(alteredNotes);
     var shiftedSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(originalNotesShifted, this.tempo);
-    var shiftedSamplesBackToNotes = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(shiftedSamplesCollection);
+    var shiftedSamplesBackToNotes = incrementalBufferManager.convertSamplesBufferToNotes(shiftedSamplesCollection);
     var shiftedWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(shiftedSamplesBackToNotes);
     var expectedResults2 = new CompareResults();
     expectedResults2.correct = 8;
@@ -2866,7 +2866,7 @@
     println('Sample lengths :  ' + originalSampleLength + ' | ' + pitchTrackerSamplesLength);
     var exerciseSamplesCollectionFromPitchTracker = pt.samples;
     var incrementalBufferManager = new IncrementalBufferManager();
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollectionFromPitchTracker);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollectionFromPitchTracker);
     var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
     println('Comparing exact copies (incremental)...');
     var expectedResults = new CompareResults();
@@ -2891,7 +2891,7 @@
       }
       var sliceOfSamples = exerciseSamplesCollection.subList_vux9f0$(curSampleIndex, endIndex);
       runningListOfSampleCollections.addAll_brywnq$(sliceOfSamples);
-      var notes = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(runningListOfSampleCollections);
+      var notes = incrementalBufferManager.convertSamplesBufferToNotes(runningListOfSampleCollections);
       curSampleIndex = curSampleIndex + sampleSliceSize | 0;
       if (endIndex === exerciseSamplesCollection.size) {
         break;
@@ -2905,7 +2905,7 @@
     println('****** Beginning true incremental test');
     var incrementalBufferManager = new IncrementalBufferManager();
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
     println('Comparing exact copies (incremental)...');
     var incrementalComparison = new IncrementalComparisonEngine();
@@ -2921,7 +2921,7 @@
     println('****** Beginning incremental bulk test');
     var incrementalBufferManager = new IncrementalBufferManager();
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
     println('Comparing exact copies (incremental)...');
     var expectedResults = new CompareResults();
@@ -2935,7 +2935,7 @@
     var incrementalComparison = new IncrementalComparisonEngine();
     var incrementalBufferManager = new IncrementalBufferManager();
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var sharpNoteOriginalFrequency = exactCopyGenerated.get_za3lpa$(1).note.getFrequency();
     var nextNoteUpFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(exactCopyGenerated.get_za3lpa$(1).note.noteNumber + 1 | 0);
     var distanceInHz = nextNoteUpFrequency - sharpNoteOriginalFrequency;
@@ -2955,7 +2955,7 @@
     var incrementalComparison = new IncrementalComparisonEngine();
     var incrementalBufferManager = new IncrementalBufferManager();
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var flatNoteOriginalFrequency = exactCopyGenerated.get_za3lpa$(1).note.getFrequency();
     var nextNoteDownFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(exactCopyGenerated.get_za3lpa$(1).note.noteNumber - 1 | 0);
     var distanceInHz = flatNoteOriginalFrequency - nextNoteDownFrequency;
@@ -2976,7 +2976,7 @@
     var incrementalBufferManager = new IncrementalBufferManager();
     var rushedNotes = listOf([new Note(69, 0.5), new Note(81, 1.0 - listenerApp.parameters.allowableRhythmMargin - 0.01), new Note(69, 1.0), new Note(81, 1.0)]);
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(rushedNotes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
     var expectedResults = new CompareResults();
     expectedResults.correct = 2;
@@ -2990,7 +2990,7 @@
     var incrementalBufferManager = new IncrementalBufferManager();
     var notesWithShortNotes = listOf([new Note(69, 0.31), new Note(35, 0.05), new Note(69, 0.14), new Note(81, 0.78), new Note(34, 0.11), new Note(35, 0.11), new Note(69, 1.0), new Note(81, 1.0)]);
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(notesWithShortNotes, this.tempo);
-    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection);
     var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
     var expectedResults = new CompareResults();
     expectedResults.correct = 4;
