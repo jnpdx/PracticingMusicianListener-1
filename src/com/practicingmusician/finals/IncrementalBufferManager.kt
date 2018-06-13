@@ -74,9 +74,15 @@ class IncrementalBufferManager {
             Note.getNoteNumber(it.freq)
         }
 
+        pm_log("Note numbers:")
+        pm_log(noteNumbers)
+
         //tie the samples to the note numbers, so we know which is which
         //first item is the SampleCollection (frequency and length), second is the note number
         val collectedPairs = samplesSublist.zip(noteNumbers)
+
+        pm_log("Collected pairs:")
+        pm_log(collectedPairs)
 
         //pm_log("Collected pairs:")
         //pm_log(collectedPairs)

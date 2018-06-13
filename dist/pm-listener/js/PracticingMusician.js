@@ -1417,7 +1417,11 @@
       destination_0.add_11rb$(Note$Companion_getInstance().getNoteNumber_14dthe$(item_0.freq));
     }
     var noteNumbers = destination_0;
+    pm_log('Note numbers:');
+    pm_log(noteNumbers);
     var collectedPairs = zip(samplesSublist, noteNumbers);
+    pm_log('Collected pairs:');
+    pm_log(collectedPairs);
     var groups = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     var curList = {v: Kotlin.kotlin.collections.ArrayList_init_ww73n8$()};
     var curNoteNumber = {v: IntCompanionObject.MIN_VALUE};
