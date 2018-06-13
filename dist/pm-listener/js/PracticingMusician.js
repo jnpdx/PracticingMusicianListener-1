@@ -1383,7 +1383,6 @@
     if (samples.size === 0) {
       return Kotlin.kotlin.collections.emptyList_287e2$();
     }
-    var functionStartTimestamp = window.performance.now();
     var secondsPerBeat = 60.0 / listenerApp.getTempo();
     var samplesSublist = samples.subList_vux9f0$(positionInSamples, samples.size);
     pm_log('Converting how many samples: ' + Kotlin.toString(samplesSublist.size));
@@ -1413,7 +1412,6 @@
     }
     var noteNumbers = destination_0;
     var collectedPairs = zip(samplesSublist, noteNumbers);
-    pm_log('After mapping and zipping: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
     var groups = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     var curList = {v: Kotlin.kotlin.collections.ArrayList_init_ww73n8$()};
     var curNoteNumber = {v: IntCompanionObject.MIN_VALUE};

@@ -50,7 +50,7 @@ class IncrementalBufferManager {
 
         if (samples.count() == 0) { return listOf() }
 
-        val functionStartTimestamp = window.performance.now()
+        //val functionStartTimestamp = window.performance.now()
 
         val secondsPerBeat = 60.0 / listenerApp.getTempo()
 
@@ -75,7 +75,7 @@ class IncrementalBufferManager {
         //pm_log("Collected pairs:")
         //pm_log(collectedPairs)
 
-        pm_log("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
+        //pm_log("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
 
         //this will store groups of like-numbered sample/note pairs
