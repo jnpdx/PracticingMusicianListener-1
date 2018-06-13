@@ -815,3 +815,6 @@ var jsMusicXMLConverter = function() {
 		}
 	}
 }
+
+
+module.exports.converter = jsMusicXMLConverter
