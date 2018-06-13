@@ -1,7 +1,4 @@
-if (typeof kotlin === 'undefined') {
-  throw new Error("Error loading module 'PracticingMusician'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'PracticingMusician'.");
-}
-var PracticingMusician = function (_, Kotlin) {
+(function (_, Kotlin) {
   'use strict';
   var toList = Kotlin.kotlin.collections.toList_us0mfu$;
   var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
@@ -3272,4 +3269,4 @@ var PracticingMusician = function (_, Kotlin) {
   main([]);
   Kotlin.defineModule('PracticingMusician', _);
   return _;
-}(typeof PracticingMusician === 'undefined' ? {} : PracticingMusician, kotlin);
+}(module.exports, require('kotlin')));
