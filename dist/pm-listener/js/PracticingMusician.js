@@ -38,7 +38,7 @@
     this.tuner = this.tuner;
     this.currentFeedbackItems = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
   }
-  ListenerApp.prototype.setTempoForTests_14dthe$ = function (t) {
+  ListenerApp.prototype.setTempoForTests = function (t) {
     UserSettings_getInstance().setTempo_8555vt$(t, true);
   };
   ListenerApp.prototype.getTempo = function () {
@@ -2585,7 +2585,7 @@
   BigTest.prototype.runTest = function (parameters) {
     listenerApp = new ListenerApp();
     listenerApp.parameters = new MockParameters();
-    listenerApp.setTempoForTests_14dthe$(this.tempo);
+    listenerApp.setTempoForTests(this.tempo);
     Note$Companion_getInstance().createAllNotes();
     this.loadContent_61zpoe$(parameters.xmlUrl);
   };
@@ -2999,7 +2999,7 @@
   SliceTest.prototype.runTest = function () {
     listenerApp = new ListenerApp();
     listenerApp.parameters = new MockParameters();
-    listenerApp.setTempoForTests_14dthe$(this.tempo);
+    listenerApp.setTempoForTests(this.tempo);
     Note$Companion_getInstance().createAllNotes();
     this.exactIncrementalTestInBulk();
     this.rushedTest();

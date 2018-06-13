@@ -22,6 +22,7 @@ external fun loadXml(url: String, callback: (String) -> Unit)
 
 public class ListenerApp {
 
+  @JsName("setTempoForTests")
   fun setTempoForTests(t: Double) {
     UserSettings.setTempo(t, true)
   }
