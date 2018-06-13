@@ -8,7 +8,7 @@ var AudioAnalyzer = function() {
     this.errorMessages = []
 
     this.sourceNode = null;
-    this. analyzer = null;
+    this.analyzer = null;
     this.audioContext = null;
     this.buflen = 1024;
     this.buf = new Float32Array( this.buflen );
@@ -50,10 +50,10 @@ var AudioAnalyzer = function() {
                 analyzerObj.isFunctional = false
                 displayFlashMessages(
                 [{type:"danger",
-                  message:"Couldn't get access to microphone stream"
+                  message:"Couldn't get access to microphone stream:" + err
                 }]
               )
-
+                console.log(err.stack)
                 pm_log("Error: " + err,10)
             });
     }
@@ -66,39 +66,34 @@ var AudioAnalyzer = function() {
     this.gotStream = function(stream) {
         console.log("Got stream")
         // Create an AudioNode from the stream.
-        mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
 
         // Connect it to the destination.
         this.analyzer = this.audioContext.createAnalyser();
-        this.analyzer.fftSize = 2048;
-        mediaStreamSource.connect( this. analyzer );
+        this.scriptProcessor = this.audioContext.createScriptProcessor(1024, 1, 1)
+        this.pitchDetector = new (Module().AubioPitch)(
+          'default', 1024, 1, this.audioContext.sampleRate)
+
+      this.audioContext.createMediaStreamSource(stream).connect(this.analyzer)
+      this.analyzer.connect(this.scriptProcessor)
+      this.scriptProcessor.connect(this.audioContext.destination)
+
+      this.scriptProcessor.addEventListener('audioprocess', function (event) {
+        var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
+          //console.log(frequency)
+          this.storedPitch = frequency
+        }.bind(this))
+      }
+
+    this.updatePitch = function() {
+      return this.storedPitch
     }
-
-    //get the current pitch
-    this.updatePitch = function(timestamp) {
-        if (this.analyzer == null)
-            return
-
-        //pm_log("Updating pitch")
-
-        var cycles = new Array;
-        this.analyzer.getFloatTimeDomainData( this.buf );
-
-        //calculate the amplitude
-        //var avg = this.buf.reduce(function(sum, a) { return sum + a },0)/(this.buf.length||1);
-        //console.log("Average: " + avg)
-
-        var ac = this.autoCorrelate( this.buf, this.audioContext.sampleRate );
-
-        return ac
-    }
-
+    this.storedPitch = -1
 
     this.autoCorrelate = function(a,r){var e=a.length;var t=Math.floor(e/2);var n=-1;var o=0;var u=0;var i=false;var l=new Array(t);for(var v=0;v<e;v++){var f=a[v];u+=f*f}u=Math.sqrt(u/e);if(u<thresholdAmount)return-1;var c=1;for(var s=MIN_SAMPLES;s<t;s++){var d=0;for(var v=0;v<t;v++){d+=Math.abs(a[v]-a[v+s])}d=1-d/t;l[s]=d;if(d>GOOD_ENOUGH_CORRELATION&&d>c){i=true;if(d>o){o=d;n=s}}else if(i){var m=(l[n+1]-l[n-1])/l[n];return r/(n+8*m)}c=d}if(o>.01){return r/n}return-1}
 }
 var thresholdAmount = 0.01
 
-var MIN_SAMPLES=0;var GOOD_ENOUGH_CORRELATION=.9;
+var MIN_SAMPLES=0;var GOOD_ENOUGH_CORRELATION=0.9;
 var audioAnalyzer = new AudioAnalyzer()
 
 

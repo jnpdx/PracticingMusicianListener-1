@@ -78,11 +78,11 @@ var AudioAnalyzer = function() {
       this.scriptProcessor.connect(this.audioContext.destination)
 
       this.scriptProcessor.addEventListener('audioprocess', function (event) {
-      var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
-        //console.log(frequency)
-        this.storedPitch = frequency
-      }.bind(this))
-    }
+        var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
+          //console.log(frequency)
+          this.storedPitch = frequency
+        }.bind(this))
+      }
 
     this.updatePitch = function() {
       return this.storedPitch

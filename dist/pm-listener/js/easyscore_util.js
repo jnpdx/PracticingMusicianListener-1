@@ -269,9 +269,17 @@ var EasyScoreUtil = function() {
 		copyrightInfoContainer = document.createElement("div")
 		copyrightInfoContainer.id = "copyrightContainer"
 
-		copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo + " v1.0b5"
-
 		notationBody.appendChild(copyrightInfoContainer)
+
+		var copyRight = document.createElement("span")
+		copyRight.id = "copyRight"
+		copyRight.innerHTML = this.exercise.copyrightInfo
+		copyrightInfoContainer.appendChild(copyRight)
+
+    var versionNumber = document.createElement("span")
+    versionNumber.id = "versionNumber"
+    versionNumber.innerHTML = 'v1.0b8'
+    copyrightInfoContainer.appendChild(versionNumber)
 
 		//remove the old logo, if it exists
 		var logoContainer = document.getElementById("notationPmLogo")
@@ -501,7 +509,10 @@ var EasyScoreUtil = function() {
 		return system
 	}
 
-  this.notateExercise = function(noteToHighlight, noteColor, isBlink = false) {
+  this.notateExercise = function(noteToHighlight, noteColor, isBlink) {
+
+    if (isBlink == undefined)
+      isBlink = false
 
     var totalBars = this.exercise.systems.reduce(function(total, cur) {
       return total + cur.bars.length
@@ -703,29 +714,6 @@ var EasyScoreUtil = function() {
 
               }
 
-              //vfNote.setStemStyle({strokeStyle: 'black', fillStyle: 'black'})
-
-              if (note.id == noteToHighlight) {
-                //console.log("highlight")
-
-                if (isBlink) {
-                  vfNote.setStemStyle({strokeStyle: 'blue', fillStyle: 'blue'})
-                  vfNote.setKeyStyle(0,{strokeStyle: 'blue', fillStyle: 'blue'})
-
-                  setTimeout(() => {
-                    //console.log("Unhighlight")
-                    this.notateExercise(noteToHighlight,this.highlightColor,false)
-                  }, 50)
-                } else {
-                  vfNote.setStemStyle({strokeStyle: noteColor, fillStyle: noteColor})
-                  vfNote.setKeyStyle(0,{strokeStyle: noteColor, fillStyle: noteColor})
-                }
-              } else {
-
-              }
-
-
-
               this.notesById[note.id] = vfNote
 
               //console.log("note:")
@@ -884,7 +872,7 @@ var EasyScoreUtil = function() {
 		}
 
 		return {
-			x: (initialPos + distance * ts.percent),
+			x: initialPos,
 			y: staveYPos,
 			page: ts.currentItem.page
 		}
@@ -913,6 +901,37 @@ var EasyScoreUtil = function() {
 		return ts.currentItem.page
 	}
 
+  //draw the indicator line (blue line that shows current position)
+	this.drawIndicatorLineGraphic = function(canvas, beat) {
+
+		var indicatorPosition = this.getPositionForBeat(beat)
+
+		var indicatorOverflow = 20 * this.contentScaleFactor
+
+		var stave = this.getBasicStave()
+		var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
+
+		var topY = indicatorPosition.y - indicatorOverflow
+		var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
+
+		if (canvas.getContext) {
+
+			// use getContext to use the canvas for drawing
+			var ctx = canvas.getContext("2d")
+
+			ctx.strokeStyle = "#4990E2"
+			ctx.lineWidth = 3
+
+			// Stroked path
+			ctx.beginPath()
+			ctx.moveTo(indicatorPosition.x * this.contentScaleFactor, bottomY * this.contentScaleFactor)
+			ctx.lineTo(indicatorPosition.x * this.contentScaleFactor, topY * this.contentScaleFactor)
+			ctx.closePath()
+			ctx.stroke()
+
+		}
+	}
+
 	this.drawIndicatorLine = function(canvas, beat) {
 	  var beatPositions = this.getElementsForBeat(beat)
 	  var noteId = beatPositions.currentItem.noteId
@@ -924,11 +943,26 @@ var EasyScoreUtil = function() {
       	  console.log("draw " + beat)
       this.noteToHighlight = noteId
       this.beatToHighlight = Math.floor(beat)
-      this.notateExercise(
-        noteId,
-        this.highlightColor,
-        beatPositions.currentItem.duration > 1 //only blink if the duration is greater than one beat
-        )
+
+      var isBlink = beatPositions.currentItem.duration > 1
+
+      var blinkFunction1 = function() {
+            this.drawIndicatorLineGraphic(canvas,beat)
+          }.bind(this)
+
+      var blinkFunction2 = function() {
+          //console.log("Unhighlight")
+          canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+          setTimeout(blinkFunction1,100)
+        }.bind(this)
+
+      if (isBlink) {
+        setTimeout(blinkFunction2, 50)
+      }
+
+
+      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+      this.drawIndicatorLineGraphic(canvas, beat)
     }
 
 	}
@@ -1027,4 +1061,23 @@ var EasyScoreUtil = function() {
 		document.getElementById("notationPage_page" + pageNum).appendChild(obj)
 	}
 
+}
+
+
+var currentAnimation = null;
+function placeTuner(centsDifferent) {
+  var meterWidth = document.getElementById('note-meter').offsetWidth
+  var tunerPosition = (centsDifferent > 0 ?
+    (50 - (50 - 4.5) * (centsDifferent / -50))
+      :
+    (50 + (50 - 4.5) * (centsDifferent / 50)))
+  var tunerPosPixels = meterWidth * tunerPosition * .01
+  if (Math.abs(centsDifferent) < 5) {
+    document.getElementById('tunerNeedle').classList.add('highlighted')
+    document.getElementById('tunerNeedle').style.backgroundColor = 'green'
+  } else {
+    document.getElementById('tunerNeedle').classList.remove('highlighted')
+    document.getElementById('tunerNeedle').style.backgroundColor = '#496A8B'
+  }
+  document.getElementById('tunerNeedle').style.left = "" + tunerPosition + "%"
 }

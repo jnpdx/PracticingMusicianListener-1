@@ -55,11 +55,23 @@ div#titleContainer span {
 }
 
 div#copyrightContainer {
-    text-align: center;
+    width: 100%;
     margin-top: 60px;
     font-size: 9px;
     color: #5c5c5c;
     font-weight: 200;
+}
+
+span#copyRight {
+    display: block;
+    text-align: center;
+}
+
+span#versionNumber {
+    display: block;
+    position: absolute;
+    right: 80px;
+    bottom: 0px;
 }
 
 div#notationPmLogo {
@@ -413,3 +425,128 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
   background: #2B4D71;
 }
+
+ /* the note meter */
+div#tuner_note_label {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.note-meter {
+  padding: 70px 0 50px 0;
+  position: relative;
+  //background-color: #f00;
+}
+.note-meter .needle {
+  position: absolute;
+  top: 0;
+  left: 50%; /* formula: 50 - (50 - 4.5) * (-20 / -50) OR 50 + (50 - 4.5) × (20/50) */
+  width: 2px;
+  height: 185px;
+  /*background: #e75863;*/
+  background: #496A8B;
+  z-index: 5;
+}
+.note-meter .needle:after {
+  position: absolute;
+  top: -4px;
+  left: -10px;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 22px solid #496A8B
+}
+.note-meter .needle.highlighted:after {
+  border-top: 22px solid green
+}
+.note-meter ul {
+  list-style-type: none;
+  height: 150px;
+  margin: 0 auto;
+  padding: 0 0 0 0px;
+}
+.note-meter ul li {
+  height: 150px;
+  width: 9.0909090909%;
+  float: left;
+  text-align: center;
+  position: relative;
+  height: 150px;
+  font-size: 13px;
+  color: #dadada;
+}
+.note-meter ul li:before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: #fff;
+  z-index: 3;
+}
+.note-meter ul li:after {
+  position: absolute;
+  content: '';
+  width: 2px;
+  left: 50%;
+  top: 0;
+  background: #ebebeb;
+  height: 100%;
+  margin-left: -1px;
+  display: block;
+  z-index: 1;
+}
+.note-meter ul li:first-child:before, .note-meter ul li:last-child:before {
+  height: 100px;
+}
+.note-meter ul li:nth-child(2):before, .note-meter ul li:nth-child(11):before {
+  height: 80px;
+}
+.note-meter ul li:nth-child(3):before, .note-meter ul li:nth-child(10):before {
+  height: 60px;
+}
+.note-meter ul li:nth-child(4):before, .note-meter ul li:nth-child(9):before {
+  height: 40px;
+}
+.note-meter ul li:nth-child(5):before, .note-meter ul li:nth-child(8):before {
+  height: 20px;
+}
+.note-meter ul li:nth-child(6):before, .note-meter ul li:nth-child(7):before {
+  height: 10px;
+}
+
+.note-meter ul li p {
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  padding: 20px 0 0 0;
+  z-index: 2;
+}
+.note-meter .flat {
+    bottom: 10%;
+    position: absolute;
+    left: 0%;
+    color: #dadada;
+    font-weight: bold;
+    font-size: 24px;
+	z-index: 20;
+}
+.note-meter .sharp {
+	bottom: 10%;
+    position: absolute;
+    right: 0%;
+    color: #dadada;
+    font-weight: bold;
+    font-size: 20px;
+	z-index: 20;
+}
+
+  .animatedNeedle {
+    transition-property: left, background-color;
+    transition-duration: 0.3s;
+  }

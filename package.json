@@ -6,7 +6,7 @@
   "files": [
     "dist"
   ],
-  "main": "gulpfile.js",
+  "main": "dist/pm-listener/js/PracticingMusician.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -206,7 +206,6 @@ var PracticingMusician = function (_, Kotlin) {
   ListenerApp.prototype.moveToPosition_14dthe$ = function (beat) {
     var tmp$;
     var indicatorCanvas = Kotlin.isType(tmp$ = document.getElementById('indicatorCanvas'), HTMLCanvasElement) ? tmp$ : null;
-    (indicatorCanvas != null ? indicatorCanvas.getContext('2d') : null).clearRect(0, 0, indicatorCanvas != null ? indicatorCanvas.width : null, indicatorCanvas != null ? indicatorCanvas.height : null);
     this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat));
     this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat);
   };
@@ -887,7 +886,8 @@ var PracticingMusician = function (_, Kotlin) {
       if ((tmp$ = this$ExerciseManager.currentExercise) != null) {
         var this$ExerciseManager_0 = this$ExerciseManager;
         pm_log('Comparing...');
-        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_2k3oz0$(listenerApp.exercise.comparisonFlags, tmp$.notes, notesFromSamplesBuffer);
+        var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
+        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_2k3oz0$(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer);
         listenerApp.clearFeedbackItems();
         var tmp$_1;
         tmp$_1 = results.feedbackItems.iterator();
@@ -963,7 +963,8 @@ var PracticingMusician = function (_, Kotlin) {
     if ((tmp$ = this.currentExercise) != null) {
       pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
       var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
-      var results = this.comparisonEngine.compareNoteArrays_2k3oz0$(listenerApp.exercise.comparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
+      var combinedComparisonFlags = new ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.parameters.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration);
+      var results = this.comparisonEngine.compareNoteArrays_2k3oz0$(combinedComparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
       listenerApp.clearFeedbackItems();
       var tmp$_0;
       tmp$_0 = results.feedbackItems.iterator();
@@ -1999,7 +2000,7 @@ var PracticingMusician = function (_, Kotlin) {
   };
   function Note$Companion() {
     Note$Companion_instance = this;
-    this.noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    this.noteNames = ['C', 'C#', 'D', 'E\u266D', 'E', 'F', 'F#', 'G', 'A\u266D', 'A', 'B\u266D', 'B'];
   }
   Note$Companion.prototype.getNoteNumber_14dthe$ = function (frequency) {
     if (frequency === -1.0)
@@ -2046,11 +2047,12 @@ var PracticingMusician = function (_, Kotlin) {
     }
     return closestNoteValue;
   };
-  function Note$Companion$NoteWithDiff(note, differenceInFreq, differenceInCents, tuningDirection) {
+  function Note$Companion$NoteWithDiff(note, differenceInFreq, differenceInCents, tuningDirection, frequency) {
     this.note = note;
     this.differenceInFreq = differenceInFreq;
     this.differenceInCents = differenceInCents;
     this.tuningDirection = tuningDirection;
+    this.frequency = frequency;
   }
   Note$Companion$NoteWithDiff.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -2069,11 +2071,14 @@ var PracticingMusician = function (_, Kotlin) {
   Note$Companion$NoteWithDiff.prototype.component4 = function () {
     return this.tuningDirection;
   };
-  Note$Companion$NoteWithDiff.prototype.copy_kjeael$ = function (note, differenceInFreq, differenceInCents, tuningDirection) {
-    return new Note$Companion$NoteWithDiff(note === void 0 ? this.note : note, differenceInFreq === void 0 ? this.differenceInFreq : differenceInFreq, differenceInCents === void 0 ? this.differenceInCents : differenceInCents, tuningDirection === void 0 ? this.tuningDirection : tuningDirection);
+  Note$Companion$NoteWithDiff.prototype.component5 = function () {
+    return this.frequency;
+  };
+  Note$Companion$NoteWithDiff.prototype.copy_ldj78l$ = function (note, differenceInFreq, differenceInCents, tuningDirection, frequency) {
+    return new Note$Companion$NoteWithDiff(note === void 0 ? this.note : note, differenceInFreq === void 0 ? this.differenceInFreq : differenceInFreq, differenceInCents === void 0 ? this.differenceInCents : differenceInCents, tuningDirection === void 0 ? this.tuningDirection : tuningDirection, frequency === void 0 ? this.frequency : frequency);
   };
   Note$Companion$NoteWithDiff.prototype.toString = function () {
-    return 'NoteWithDiff(note=' + Kotlin.toString(this.note) + (', differenceInFreq=' + Kotlin.toString(this.differenceInFreq)) + (', differenceInCents=' + Kotlin.toString(this.differenceInCents)) + (', tuningDirection=' + Kotlin.toString(this.tuningDirection)) + ')';
+    return 'NoteWithDiff(note=' + Kotlin.toString(this.note) + (', differenceInFreq=' + Kotlin.toString(this.differenceInFreq)) + (', differenceInCents=' + Kotlin.toString(this.differenceInCents)) + (', tuningDirection=' + Kotlin.toString(this.tuningDirection)) + (', frequency=' + Kotlin.toString(this.frequency)) + ')';
   };
   Note$Companion$NoteWithDiff.prototype.hashCode = function () {
     var result = 0;
@@ -2081,10 +2086,11 @@ var PracticingMusician = function (_, Kotlin) {
     result = result * 31 + Kotlin.hashCode(this.differenceInFreq) | 0;
     result = result * 31 + Kotlin.hashCode(this.differenceInCents) | 0;
     result = result * 31 + Kotlin.hashCode(this.tuningDirection) | 0;
+    result = result * 31 + Kotlin.hashCode(this.frequency) | 0;
     return result;
   };
   Note$Companion$NoteWithDiff.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.note, other.note) && Kotlin.equals(this.differenceInFreq, other.differenceInFreq) && Kotlin.equals(this.differenceInCents, other.differenceInCents) && Kotlin.equals(this.tuningDirection, other.tuningDirection)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.note, other.note) && Kotlin.equals(this.differenceInFreq, other.differenceInFreq) && Kotlin.equals(this.differenceInCents, other.differenceInCents) && Kotlin.equals(this.tuningDirection, other.tuningDirection) && Kotlin.equals(this.frequency, other.frequency)))));
   };
   Note$Companion.prototype.closestNoteWithDiff_14dthe$ = function (frequency) {
     var tmp$;
@@ -2092,7 +2098,7 @@ var PracticingMusician = function (_, Kotlin) {
     var closestNote = new Note(-1, 0.0);
     var distanceInCents = 0.0;
     if (frequency < ALL_NOTES.get_za3lpa$(0).getFrequency() * 0.67 || frequency > last(ALL_NOTES).getFrequency() * 1.3) {
-      return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents, 0);
+      return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents, 0, frequency);
     }
     tmp$ = ALL_NOTES.iterator();
     while (tmp$.hasNext()) {
@@ -2120,7 +2126,7 @@ var PracticingMusician = function (_, Kotlin) {
       var distanceInHz_0 = idealItemFrequency - noteBelowFrequency;
       distanceInCents = (idealItemFrequency - frequency) / distanceInHz_0 * 100.0;
     }
-    return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents, tuningDirection);
+    return new Note$Companion$NoteWithDiff(closestNote, closestFrequency, distanceInCents, tuningDirection, frequency);
   };
   Note$Companion.$metadata$ = {
     kind: Kotlin.Kind.OBJECT,
@@ -2498,17 +2504,18 @@ var PracticingMusician = function (_, Kotlin) {
     var tunerString = {v: ''};
     var it = (tmp$ = noteWithDiff.note) != null ? tmp$.noteName() : null;
     if (!Kotlin.equals(it, 'NaN')) {
-      tunerString.v = it + ' ';
-      if (noteWithDiff.differenceInCents > 10.0) {
-        if (noteWithDiff.tuningDirection === 1) {
-          tunerString.v += '+' + Kotlin.toString(noteWithDiff.differenceInCents | 0) + ' SHARP';
-        }
-         else if (noteWithDiff.tuningDirection === -1) {
-          tunerString.v += '-' + Kotlin.toString(noteWithDiff.differenceInCents | 0) + ' FLAT';
-        }
+      if (noteWithDiff.tuningDirection === 1) {
+        placeTuner(noteWithDiff.differenceInCents | 0);
       }
+       else {
+        placeTuner(0 - (noteWithDiff.differenceInCents | 0) | 0);
+      }
+      tunerString.v = it;
     }
-    (tmp$_0 = window.document.getElementById('tuner')) != null ? (tmp$_0.innerHTML = tunerString.v) : null;
+     else {
+      placeTuner(0);
+    }
+    (tmp$_0 = window.document.getElementById('tuner_note_label')) != null ? (tmp$_0.innerHTML = tunerString.v) : null;
   };
   Tuner.prototype.run = function () {
     this.start();
@@ -2642,6 +2649,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.url_7mvjxd$_0 = '';
     this.xmlUrl_7mvjxd$_0 = 'xmlFile.xml';
     this.audioAssetPath_7mvjxd$_0 = '';
+    this.comparisonFlags_7mvjxd$_0 = new ComparisonFlags(true, true, true);
     this.allowableCentsMargin_7mvjxd$_0 = 40;
     this.allowableRhythmMargin_7mvjxd$_0 = 0.25;
     this.allowableDurationRatio_7mvjxd$_0 = 0.5;
@@ -2697,6 +2705,11 @@ var PracticingMusician = function (_, Kotlin) {
   Object.defineProperty(MockParameters.prototype, 'audioAssetPath', {
     get: function () {
       return this.audioAssetPath_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'comparisonFlags', {
+    get: function () {
+      return this.comparisonFlags_7mvjxd$_0;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'allowableCentsMargin', {
