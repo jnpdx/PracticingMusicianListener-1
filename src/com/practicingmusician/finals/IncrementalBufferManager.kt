@@ -36,9 +36,15 @@ class IncrementalBufferManager {
 
     /* End state */
 
+    @JsName("arrayToList")
+    fun js_arrayToList(arr: Array<SampleCollection>) : List<SampleCollection> {
+        return arr.toList()
+    }
+
     //This takes samples from the microphone and attempts to convert them into meaningful Notes
     //It attempts to do some smart analysis, including getting rid of short values
     //and then stitching the remaining like-values together
+
     @JsName("convertSamplesBufferToNotes")
     fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<NotePlacement> {
 

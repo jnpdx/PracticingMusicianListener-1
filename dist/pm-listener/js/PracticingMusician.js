@@ -1376,6 +1376,9 @@
     this.sampleRate = 44100.0;
     this.minDurationInBeats = 0.0;
   }
+  IncrementalBufferManager.prototype.arrayToList = function (arr) {
+    return toList(arr);
+  };
   IncrementalBufferManager.prototype.convertSamplesBufferToNotes = function (samples) {
     this.minDurationInBeats = listenerApp.parameters.minDurationInBeats;
     var positionInSamples = 0;
