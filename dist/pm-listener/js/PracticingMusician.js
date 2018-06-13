@@ -44,13 +44,16 @@
   ListenerApp.prototype.getTempo = function () {
     return UserSettings_getInstance().tempo;
   };
+  ListenerApp.prototype.createNotes = function () {
+    Note$Companion_getInstance().createAllNotes();
+  };
   ListenerApp.prototype.getMetronomeAudio = function () {
     return UserSettings_getInstance().metronomeAudioOn;
   };
   ListenerApp.prototype.runTuner = function (parameters) {
     console.log('Running with parameters:');
     console.log(parameters);
-    Note$Companion_getInstance().createAllNotes();
+    this.createNotes();
     this.tuner.audioAnalyzer = audioAnalyzer;
     this.tuner.run();
   };
@@ -78,7 +81,7 @@
     this.audioManager = new AudioManager();
     this.exerciseManager = new ExerciseManager(this.audioManager);
     this.scoreUtil = new EasyScoreUtil();
-    Note$Companion_getInstance().createAllNotes();
+    this.createNotes();
     audioAnalyzer.setupMedia();
     var prefs = new AppPreferences(parameters.metronomeSound, parameters.bpm, parameters.transposition, parameters.pitch);
     UserSettings_getInstance().setTempo_8555vt$(this.exercise.tempo, true);

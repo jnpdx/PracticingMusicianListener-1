@@ -45,6 +45,11 @@ public class ListenerApp {
     return UserSettings.tempo
   }
 
+  @JsName("createNotes")
+  fun createNotes() {
+    Note.createAllNotes()
+  }
+
   @JsName("getMetronomeAudio")
   fun getMetronomeAudio(): Boolean {
     return UserSettings.metronomeAudioOn
@@ -55,7 +60,7 @@ public class ListenerApp {
     console.log("Running with parameters:")
     console.log(parameters)
 
-    Note.createAllNotes()
+    this.createNotes()
 
     //audioAnalyzer.setupMedia()
 
@@ -104,7 +109,7 @@ public class ListenerApp {
     this.scoreUtil = EasyScoreUtil()
 
 
-    Note.createAllNotes()
+    this.createNotes()
 
     audioAnalyzer.setupMedia()
 
