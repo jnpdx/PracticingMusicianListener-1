@@ -1849,10 +1849,10 @@
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log('Test subject sharp');
             if (distanceInCents < 50) {
-              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'SHARP'));
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'SHARP', distanceInHz));
             }
              else {
-              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', testItem.note.noteName()));
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', testItem.note.noteName(), distanceInHz));
             }
             throwSafeIncorrectSwitch(feedbackItem);
           }
@@ -1864,10 +1864,10 @@
           if (distanceInCents_0 > listenerApp.parameters.allowableCentsMargin) {
             pm_log('Test subject flat');
             if (distanceInCents_0 < 50) {
-              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'FLAT'));
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'FLAT', distanceInHz_0));
             }
              else {
-              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', testItem.note.noteName()));
+              feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', testItem.note.noteName(), distanceInHz_0));
             }
             throwSafeIncorrectSwitch(feedbackItem);
           }
