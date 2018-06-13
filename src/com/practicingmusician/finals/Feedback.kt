@@ -5,7 +5,7 @@ package com.practicingmusician.finals
  */
 
 //This is an individual metric (like Pitch or Duration) that gets sent to EasyScore
-data class FeedbackMetric(var name : String, var value : String)
+data class FeedbackMetric(var name : String, var value : String, var amount : Double = -1.0)
 
 enum class FeedbackType {
   Correct, Incorrect, Missed

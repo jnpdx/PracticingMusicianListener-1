@@ -982,9 +982,12 @@
     simpleName: 'ExerciseManager',
     interfaces: [TimeKeeperAnalyzer]
   };
-  function FeedbackMetric(name, value) {
+  function FeedbackMetric(name, value, amount) {
+    if (amount === void 0)
+      amount = -1.0;
     this.name = name;
     this.value = value;
+    this.amount = amount;
   }
   FeedbackMetric.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -997,20 +1000,24 @@
   FeedbackMetric.prototype.component2 = function () {
     return this.value;
   };
-  FeedbackMetric.prototype.copy_puj7f4$ = function (name, value) {
-    return new FeedbackMetric(name === void 0 ? this.name : name, value === void 0 ? this.value : value);
+  FeedbackMetric.prototype.component3 = function () {
+    return this.amount;
+  };
+  FeedbackMetric.prototype.copy_do2bxa$ = function (name, value, amount) {
+    return new FeedbackMetric(name === void 0 ? this.name : name, value === void 0 ? this.value : value, amount === void 0 ? this.amount : amount);
   };
   FeedbackMetric.prototype.toString = function () {
-    return 'FeedbackMetric(name=' + Kotlin.toString(this.name) + (', value=' + Kotlin.toString(this.value)) + ')';
+    return 'FeedbackMetric(name=' + Kotlin.toString(this.name) + (', value=' + Kotlin.toString(this.value)) + (', amount=' + Kotlin.toString(this.amount)) + ')';
   };
   FeedbackMetric.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.name) | 0;
     result = result * 31 + Kotlin.hashCode(this.value) | 0;
+    result = result * 31 + Kotlin.hashCode(this.amount) | 0;
     return result;
   };
   FeedbackMetric.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.value, other.value)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.value, other.value) && Kotlin.equals(this.amount, other.amount)))));
   };
   function FeedbackType(name, ordinal) {
     Enum.call(this);
@@ -1781,12 +1788,12 @@
       if (comparisonFlags.testRhythm) {
         if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
           pm_log('Test subject rushing');
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'EARLY'));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'EARLY', distanceAwayRounded));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
           pm_log('Test subject dragging');
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'LATE'));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', 'LATE', distanceAwayRounded));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else {
