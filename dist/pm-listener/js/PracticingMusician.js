@@ -1767,12 +1767,12 @@
         var durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0;
         if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
           pm_log('Test subject too short by ' + Kotlin.toString(durationDifferenceRatioRounded), 0);
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'SHORT'));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'SHORT', durationDifferenceRatioRounded));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else if (durationDifferenceRatio > 1.0 / listenerApp.parameters.allowableDurationRatio) {
           pm_log('Test subject too long by ' + Kotlin.toString(durationDifferenceRatioRounded), 0);
-          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'LONG'));
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'LONG', durationDifferenceRatioRounded));
           throwSafeIncorrectSwitch(feedbackItem);
         }
          else {
