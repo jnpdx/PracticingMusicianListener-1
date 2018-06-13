@@ -922,6 +922,15 @@
     this.pitchTracker.stop();
     listenerApp.scoreUtil.changePlayButton('stopped');
   };
+  ExerciseManager.prototype.jsNotesToList = function (jsNotes) {
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(jsNotes.length);
+    var tmp$;
+    for (tmp$ = 0; tmp$ !== jsNotes.length; ++tmp$) {
+      var item = jsNotes[tmp$];
+      destination.add_11rb$(new Note(item.noteNumber, item.duration));
+    }
+    return toMutableList(destination);
+  };
   ExerciseManager.prototype.loadExercise = function () {
     var tmp$;
     pm_log('Loading exericse:');
@@ -929,13 +938,7 @@
     var exerciseDefinition = new ExerciseDefinition();
     exerciseDefinition.prerollLengthInBeats = exercise.count_off;
     var jsNotes = exercise.notes;
-    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(jsNotes.length);
-    var tmp$_0;
-    for (tmp$_0 = 0; tmp$_0 !== jsNotes.length; ++tmp$_0) {
-      var item = jsNotes[tmp$_0];
-      destination.add_11rb$(new Note(item.noteNumber, item.duration));
-    }
-    exerciseDefinition.notes = toMutableList(destination);
+    exerciseDefinition.notes = this.jsNotesToList(jsNotes);
     pm_log('Loaded ' + Kotlin.toString(exerciseDefinition.notes.size) + ' notes');
     pm_log(exerciseDefinition.notes);
     this.currentExercise = exerciseDefinition;

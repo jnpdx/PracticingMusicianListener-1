@@ -156,6 +156,13 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         listenerApp.scoreUtil.changePlayButton("stopped")
     }
 
+    @JsName("jsNotesToList")
+    fun jsNotesToList(jsNotes : Array<SimpleJSNoteObject>) : MutableList<Note> {
+      return jsNotes.map {
+            Note(it.noteNumber,it.duration)
+        }.toMutableList()
+    }
+
     @JsName("loadExercise")
     fun loadExercise() {
         pm_log("Loading exericse:")
@@ -172,9 +179,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         val jsNotes = exercise.notes
 
-        exerciseDefinition.notes = jsNotes.map {
-            Note(it.noteNumber,it.duration)
-        }.toMutableList()
+        exerciseDefinition.notes = this.jsNotesToList(jsNotes)
 
         pm_log("Loaded " + exerciseDefinition.notes.count() + " notes")
         pm_log(exerciseDefinition.notes)
