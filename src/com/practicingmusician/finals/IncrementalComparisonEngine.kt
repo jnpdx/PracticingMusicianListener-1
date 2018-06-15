@@ -34,7 +34,7 @@ class IncrementalComparisonEngine {
   /* End state */
 
   @JsName("arrayToList")
-  fun js_arrayToList(arr: Array<Note>) : List<Note> {
+  fun js_arrayToList(arr: Array<Note>): List<Note> {
     return arr.toList()
   }
 
@@ -279,7 +279,7 @@ class IncrementalComparisonEngine {
           if (comparisonFlags.testPitch)
             feedbackItemTypes.add(FeedbackMetric("pitch", "Not played"))
           else
-            feedbackItemTypes.add(FeedbackMetric("speed","Not played"))
+            feedbackItemTypes.add(FeedbackMetric("speed", "Not played"))
 
         } else {
           feedbackItemTypes.add(FeedbackMetric("duration", "rest"))
@@ -309,9 +309,9 @@ class IncrementalComparisonEngine {
             pm_log("Test subject sharp")
 
             if (distanceInCents < 50) {
-              feedbackItemTypes.add(FeedbackMetric("pitch", "SHARP",distanceInHz))
+              feedbackItemTypes.add(FeedbackMetric("pitch", "SHARP", distanceInHz))
             } else {
-              feedbackItemTypes.add(FeedbackMetric("pitch", testItem.note.noteName(),distanceInHz))
+              feedbackItemTypes.add(FeedbackMetric("pitch", testItem.note.noteName(), distanceInHz))
             }
             //feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInHz.toInt()))
 
@@ -335,9 +335,9 @@ class IncrementalComparisonEngine {
 //            console.log(testItem.note)
 
             if (distanceInCents < 50) {
-              feedbackItemTypes.add(FeedbackMetric("pitch", "FLAT",distanceInHz))
+              feedbackItemTypes.add(FeedbackMetric("pitch", "FLAT", distanceInHz))
             } else {
-              feedbackItemTypes.add(FeedbackMetric("pitch", testItem.note.noteName(),distanceInHz))
+              feedbackItemTypes.add(FeedbackMetric("pitch", testItem.note.noteName(), distanceInHz))
             }
             //feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInHz.toInt()))
 
