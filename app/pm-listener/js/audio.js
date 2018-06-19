@@ -1,99 +1,111 @@
 //pm_log("Setting up audio js...")
 
 var AudioAnalyzer = function() {
-
     //used after init
     this.isFunctional = true
     this.hasMicrophoneAccess = false
     this.errorMessages = []
 
-    this.sourceNode = null;
-    this.analyzer = null;
-    this.audioContext = null;
-    this.buflen = 1024;
-    this.buf = new Float32Array( this.buflen );
-    this.rafID = null;
+    this.sourceNode = null
+    this.analyzer = null
+    this.audioContext = null
+    this.buflen = 1024 //should set this to 512 for other instruments, 1024 for low
+    this.buf = new Float32Array(this.buflen)
+    this.rafID = null
 
     //setup the Web Audio API streaming stuff
     this.setupMedia = function() {
-            if (window.AudioContext == undefined) {
-              this.errorMessages += "Could not find audio context"
-              this.isFunctional = false
+        if (window.AudioContext == undefined) {
+            this.errorMessages += 'Could not find audio context'
+            this.isFunctional = false
 
-              displayFlashMessages(
-                [{type:"danger",
-                  message:"Couldn't setup microphone access.  Please make sure you are using either Chrome or Firefox."
-                }]
-              )
+            displayFlashMessages([
+                {
+                    type: 'danger',
+                    message:
+                        "Couldn't setup microphone access.  Please make sure you are using either Chrome or Firefox.",
+                },
+            ])
 
-              return
-            }
+            return
+        }
 
-            navigator.mediaDevices.enumerateDevices().then(function(deviceInfos) {
-              for (var i = 0; i !== deviceInfos.length; ++i) {
+        navigator.mediaDevices.enumerateDevices().then(function(deviceInfos) {
+            for (var i = 0; i !== deviceInfos.length; ++i) {
                 console.log(deviceInfos[i])
-              }
-            })
+            }
+        })
 
-            this.audioContext = new AudioContext();
-            var constraints = { audio: {latency: 0.002}, video: false }
-            var analyzerObj = this
-            navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+        this.audioContext = new AudioContext()
+        var constraints = { audio: { latency: 0.002 }, video: false }
+        var analyzerObj = this
+        navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then(function(stream) {
                 /* use the stream */
-                pm_log("Using the stream")
+                pm_log('Using the stream')
                 analyzerObj.isFunctional = true
                 analyzerObj.hasMicrophoneAccess = true
                 analyzerObj.gotStream(stream)
-            }).catch(function(err) {
+            })
+            .catch(function(err) {
                 /* handle the error */
                 analyzerObj.errorMessages += err
                 analyzerObj.isFunctional = false
-                displayFlashMessages(
-                [{type:"danger",
-                  message:"Couldn't get access to microphone stream:" + err
-                }]
-              )
+                displayFlashMessages([
+                    {
+                        type: 'danger',
+                        message:
+                            "Couldn't get access to microphone stream:" + err,
+                    },
+                ])
                 console.log(err.stack)
-                pm_log("Error: " + err,10)
-            });
+                pm_log('Error: ' + err, 10)
+            })
     }
 
     this.getSampleRate = function() {
         return this.audioContext.sampleRate
     }
 
-
     this.gotStream = function(stream) {
-        console.log("Got stream")
+        console.log('Got stream')
         // Create an AudioNode from the stream.
 
         // Connect it to the destination.
-        this.analyzer = this.audioContext.createAnalyser();
-        this.scriptProcessor = this.audioContext.createScriptProcessor(1024, 1, 1)
-        this.pitchDetector = new (Module().AubioPitch)(
-          'default', 1024, 1, this.audioContext.sampleRate)
+        this.analyzer = this.audioContext.createAnalyser()
+        this.scriptProcessor = this.audioContext.createScriptProcessor(
+            this.buflen,
+            1,
+            1
+        )
+        this.pitchDetector = new (Module()).AubioPitch(
+            'default',
+            this.buflen,
+            1,
+            this.audioContext.sampleRate
+        )
 
-      this.audioContext.createMediaStreamSource(stream).connect(this.analyzer)
-      this.analyzer.connect(this.scriptProcessor)
-      this.scriptProcessor.connect(this.audioContext.destination)
+        this.audioContext.createMediaStreamSource(stream).connect(this.analyzer)
+        this.analyzer.connect(this.scriptProcessor)
+        this.scriptProcessor.connect(this.audioContext.destination)
 
-      this.scriptProcessor.addEventListener('audioprocess', function (event) {
-        var frequency = this.pitchDetector.do(event.inputBuffer.getChannelData(0))
-          //console.log(frequency)
-          this.storedPitch = frequency
-        }.bind(this))
-      }
+        this.scriptProcessor.addEventListener(
+            'audioprocess',
+            function(event) {
+                var frequency = this.pitchDetector.do(
+                    event.inputBuffer.getChannelData(0)
+                )
+                //console.log(frequency)
+                this.storedPitch = frequency
+            }.bind(this)
+        )
+    }
 
     this.updatePitch = function() {
-      return this.storedPitch
+        return this.storedPitch
     }
     this.storedPitch = -1
 
-    this.autoCorrelate = function(a,r){var e=a.length;var t=Math.floor(e/2);var n=-1;var o=0;var u=0;var i=false;var l=new Array(t);for(var v=0;v<e;v++){var f=a[v];u+=f*f}u=Math.sqrt(u/e);if(u<thresholdAmount)return-1;var c=1;for(var s=MIN_SAMPLES;s<t;s++){var d=0;for(var v=0;v<t;v++){d+=Math.abs(a[v]-a[v+s])}d=1-d/t;l[s]=d;if(d>GOOD_ENOUGH_CORRELATION&&d>c){i=true;if(d>o){o=d;n=s}}else if(i){var m=(l[n+1]-l[n-1])/l[n];return r/(n+8*m)}c=d}if(o>.01){return r/n}return-1}
 }
-var thresholdAmount = 0.01
-
-var MIN_SAMPLES=0;var GOOD_ENOUGH_CORRELATION=0.9;
 var audioAnalyzer = new AudioAnalyzer()
-
-
