@@ -3,7 +3,6 @@ package com.practicingmusician.finals
 import com.practicingmusician.notes.Note
 import com.practicingmusician.pm_log
 import com.practicingmusician.steppable.SampleCollection
-import kotlin.browser.window
 
 /**
  * Created by jn on 6/23/17.
@@ -45,10 +44,6 @@ class IncrementalBufferManager {
   //It attempts to do some smart analysis, including getting rid of short values
   //and then stitching the remaining like-values together
 
-  @JsName("convertSamplesToLandmarks")
-  fun convertSamplesToLandmarks(samples: List<SampleCollection>) {
-
-  }
 
   @JsName("convertSamplesBufferToNotes")
   fun convertSamplesBufferToNotes(samples: List<SampleCollection>): List<NotePlacement> {
