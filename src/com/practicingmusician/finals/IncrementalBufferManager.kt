@@ -45,6 +45,11 @@ class IncrementalBufferManager {
   //It attempts to do some smart analysis, including getting rid of short values
   //and then stitching the remaining like-values together
 
+  @JsName("convertSamplesToLandmarks")
+  fun convertSamplesToLandmarks(samples: List<SampleCollection>) {
+
+  }
+
   @JsName("convertSamplesBufferToNotes")
   fun convertSamplesBufferToNotes(samples: List<SampleCollection>): List<NotePlacement> {
 

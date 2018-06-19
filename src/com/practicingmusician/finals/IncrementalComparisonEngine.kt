@@ -4,7 +4,6 @@ import com.practicingmusician.ComparisonFlags
 import com.practicingmusician.ListenerApp
 import com.practicingmusician.notes.Note
 import com.practicingmusician.pm_log
-import kotlin.browser.window
 import kotlin.js.Math
 
 /**
