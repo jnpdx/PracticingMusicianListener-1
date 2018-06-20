@@ -5,7 +5,7 @@ package com.practicingmusician.finals
  */
 
 //This is an individual metric (like Pitch or Duration) that gets sent to EasyScore
-data class FeedbackMetric(var name: String, var value: String, var amount: Double = -1.0)
+data class FeedbackMetric(val missed: Boolean, val type: String, val value: String, val amount: Double)
 
 enum class FeedbackType {
   Correct, Incorrect, Missed
@@ -20,28 +20,27 @@ fun FeedbackItem.throwSafeIncorrectSwitch() {
   }
 }
 
-class CompareResults(val c: Int = 0, val a: Int = 0) {
+data class CompareResults(val c: Int = 0, val a: Int = 0) {
   var correct: Int = c
   var attempted: Int = a
   var feedbackItems = mutableListOf<FeedbackItem>()
 
   var finalResults = mutableListOf<IndividualNotePerformanceInfo>()
+}
 
-  fun generateResultForDatabase(): ResultsForDatabase {
+fun CompareResults.generateResultForDatabase(): ResultsForDatabase {
+  val pitch = finalResults.map { it.idealPitch - it.actualPitch }.average()
+  val rhythm = finalResults.map { it.idealBeat - it.actualBeat }.average()
+  val duration = finalResults.map { it.idealDuration - it.actualDuration }.average()
 
-    val pitch = finalResults.map { it.idealPitch - it.actualPitch }.average()
-    val rhythm = finalResults.map { it.idealBeat - it.actualBeat }.average()
-    val duration = finalResults.map { it.idealDuration - it.actualDuration }.average()
-
-    return ResultsForDatabase(
-      correct = this.correct,
-      attempted = this.attempted,
-      exerciseAveragePitch = pitch,
-      exerciseAverageRhythm = rhythm,
-      exerciseAverageDuration = duration,
-      notePerformances = finalResults.toTypedArray()
-    )
-  }
+  return ResultsForDatabase(
+    correct = this.correct,
+    attempted = this.attempted,
+    exerciseAveragePitch = pitch,
+    exerciseAverageRhythm = rhythm,
+    exerciseAverageDuration = duration,
+    notePerformances = finalResults.toTypedArray()
+  )
 }
 
 data class ToleranceLevels(val allowableCentsMargin: Int, val allowableRhythmMargin: Double, val allowableDurationRatio: Double, val largestBeatDifference: Double, val largestDurationRatioDifference: Double, val minDurationInBeats: Double)

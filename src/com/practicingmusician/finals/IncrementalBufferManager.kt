@@ -165,7 +165,7 @@ class IncrementalBufferManager {
       if (curNoteNumber != it.second) {
         val note = Note(curNoteNumber, curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
         avgFreq = avgFreq / curLengthInSamples
-        note.avgFreq = avgFreq
+        note.freq = avgFreq
         noteList.add(note)
         curLengthInSamples = 0
         avgFreq = 0.0
@@ -177,7 +177,7 @@ class IncrementalBufferManager {
     //add the last remaining one
     val lastNote = Note(curNoteNumber, curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
     avgFreq = avgFreq / curLengthInSamples
-    lastNote.avgFreq = avgFreq
+    lastNote.freq = avgFreq
     noteList.add(lastNote)
 
     //get rid of the notes that have no duration
