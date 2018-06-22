@@ -469,9 +469,6 @@ function runComparison(
         bpm
     )
 
-    console.log('Landmarks from samples:')
-    console.log(landmarksFromSamples)
-
     if (landmarksFromSamples == undefined || landmarksFromSamples.length == 0) {
         return {
             feedbackItems: [],
