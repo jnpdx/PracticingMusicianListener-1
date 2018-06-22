@@ -1020,7 +1020,7 @@ var EasyScoreUtil = function() {
 
 			var keyObj = document.createElement("span")
 			keyObj.className = "feedbackKey"
-			keyObj.innerHTML = item.name
+			keyObj.innerHTML = item.type
 
 			var valueObj = document.createElement("span")
 			valueObj.className = "feedbackValue"
