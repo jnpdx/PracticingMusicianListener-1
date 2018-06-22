@@ -145,6 +145,8 @@ var jsMusicXMLConverter = function() {
 
 		var comparisonFlags = {
 			testPitch: true,
+			testDuration: true,
+			testRhythm: true
 		}
 
 		if (isPercussionClef) {

@@ -13,6 +13,12 @@ import com.practicingmusician.steppable.TimeKeeperAnalyzer
 
 external val listenerApp: ListenerApp
 
+val minimumSizes = MinimumSizes(acceptableBeatDistance = 1.5, minDurationInBeats = 0.2)
+val factorWeights = FactorWeights(rhythmFactor = 1.0, noteFactor = 100.0, durationFactor = 1.0)
+val correctLevels = CorrectLevels(correctCentsMargin = 25.0, correctRhythmMargin = 0.3, correctDurationMargin = 0.5)
+val tolerances = Tolerances(allowableCentsMargin = 45.0, allowableRhythmMargin = 0.4, allowableDurationRatio = 0.6)
+
+
 /**
  * Created by jn on 6/6/17.
  */
@@ -88,10 +94,10 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
           exerciseNotes = listenerApp.exercise.notes,
           sampleCollections = pitchTracker.samples.toTypedArray(),
           bpm = listenerApp.getTempo().toInt(),
-          minimumSizes = MinimumSizes(acceptableBeatDistance = 1.5, minDurationInBeats = 0.2),
-          factorWeights = FactorWeights(rhythmFactor = 1.0, noteFactor = 100.0, durationFactor = 1.0),
-          correctLevels = CorrectLevels(correctCentsMargin = 25.0, correctRhythmMargin = 0.3, correctDurationMargin = 0.5),
-          tolerances = Tolerances(allowableCentsMargin = 45.0, allowableRhythmMargin = 0.4, allowableDurationRatio = 0.6),
+          minimumSizes = minimumSizes,
+          factorWeights = factorWeights,
+          correctLevels = correctLevels,
+          tolerances = tolerances,
           comparisonFlags = listenerApp.exercise.comparisonFlags
         )
 
@@ -125,11 +131,17 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
         //update the medal
         listenerApp.scoreUtil.displayMedal(iconType)
 
+        console.log("Final results:")
+        console.log(results)
+
         //only send the network request if the tempo is the default one
         //contact the server with a network request
         //if (UserSettings.isDefaultTempo) {
         ListenerNetworkManager.buildAndSendRequest(results)
+
         //}
+
+
       }
     }
 
@@ -224,10 +236,10 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
         exerciseNotes = listenerApp.exercise.notes,
         sampleCollections = pitchTracker.samples.toTypedArray(),
         bpm = listenerApp.getTempo().toInt(),
-        minimumSizes = MinimumSizes(acceptableBeatDistance = 1.5, minDurationInBeats = 0.2),
-        factorWeights = FactorWeights(rhythmFactor = 1.0, noteFactor = 100.0, durationFactor = 1.0),
-        correctLevels = CorrectLevels(correctCentsMargin = 25.0, correctRhythmMargin = 0.3, correctDurationMargin = 0.5),
-        tolerances = Tolerances(allowableCentsMargin = 45.0, allowableRhythmMargin = 0.4, allowableDurationRatio = 0.6),
+        minimumSizes = minimumSizes,
+        factorWeights = factorWeights,
+        correctLevels = correctLevels,
+        tolerances = tolerances,
         comparisonFlags = listenerApp.exercise.comparisonFlags
       )
 
