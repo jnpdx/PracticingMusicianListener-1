@@ -940,7 +940,6 @@ var EasyScoreUtil = function() {
         &&
         (noteId != this.noteToHighlight || Math.floor(beat) != this.beatToHighlight)
         ) {
-      	  console.log("draw " + beat)
       this.noteToHighlight = noteId
       this.beatToHighlight = Math.floor(beat)
 

@@ -13,12 +13,12 @@ enum class FeedbackType {
 
 data class FeedbackItem(val type: String, val beat: Double, var metrics: Array<FeedbackMetric>)
 
-data class CompareResults(val correct: Int = 0, val attempted: Int = 0, val feedbackItems: Array<FeedbackItem>, val finalResults: Array<IndividualNotePerformanceInfo>)
+data class CompareResults(val correct: Int = 0, val attempted: Int = 0, val feedbackItems: Array<FeedbackItem>, val notePerformances: Array<IndividualNotePerformanceInfo>)
 
 fun CompareResults.generateResultForDatabase(): ResultsForDatabase {
-  val pitch = finalResults.map { it.idealPitch - it.actualPitch }.average()
-  val rhythm = finalResults.map { it.idealBeat - it.actualBeat }.average()
-  val duration = finalResults.map { it.idealDuration - it.actualDuration }.average()
+  val pitch = notePerformances.map { it.idealPitch - it.actualPitch }.average()
+  val rhythm = notePerformances.map { it.idealBeat - it.actualBeat }.average()
+  val duration = notePerformances.map { it.idealDuration - it.actualDuration }.average()
 
   return ResultsForDatabase(
     correct = this.correct,
@@ -26,7 +26,7 @@ fun CompareResults.generateResultForDatabase(): ResultsForDatabase {
     exerciseAveragePitch = pitch,
     exerciseAverageRhythm = rhythm,
     exerciseAverageDuration = duration,
-    notePerformances = finalResults
+    notePerformances = notePerformances
   )
 }
 
