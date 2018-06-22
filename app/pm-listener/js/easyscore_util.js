@@ -999,14 +999,14 @@ var EasyScoreUtil = function() {
 		//console.log("Feedback type:")
 		//console.log(feedbackType.name$)
 
-		switch (feedbackType.name$) {
-		case "Missed":
+		switch (feedbackType) {
+		case "MISSED":
 			obj.className += " incorrect_note"
 			break
-		case "Incorrect":
+		case "INCORRECT":
 			obj.className += " off_note"
 			break
-		case "Correct":
+		case "CORRECT":
 			obj.className += " correct"
 			break
 		default:

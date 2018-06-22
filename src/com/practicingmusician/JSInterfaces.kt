@@ -2,7 +2,6 @@ package com.practicingmusician
 
 import com.practicingmusician.finals.CompareResults
 import com.practicingmusician.finals.FeedbackMetric
-import com.practicingmusician.finals.FeedbackType
 import com.practicingmusician.steppable.SampleCollection
 
 
@@ -142,7 +141,7 @@ external class EasyScoreUtil {
   fun getPositionForBeat(beat: Double): BeatPosition
   fun getFeedbackYPosition(staveTopY: Double): Double
 
-  fun createFeedbackHTMLElement(type: FeedbackType, items: Array<FeedbackMetric>, beat: Double)
+  fun createFeedbackHTMLElement(type: String, items: Array<FeedbackMetric>, beat: Double)
 }
 
 data class BeatPosition(val x: Double, val y: Double, val page: Int)

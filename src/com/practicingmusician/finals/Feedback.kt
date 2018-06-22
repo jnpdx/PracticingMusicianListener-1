@@ -11,22 +11,9 @@ enum class FeedbackType {
   Correct, Incorrect, Missed
 }
 
-data class FeedbackItem(var type: FeedbackType, var beat: Double, var feedbackItemType: List<FeedbackMetric>)
+data class FeedbackItem(val type: String, val beat: Double, var metrics: Array<FeedbackMetric>)
 
-//this will only change it to incorrect if it hasn't been marked as worse (missed)
-fun FeedbackItem.throwSafeIncorrectSwitch() {
-  if (this.type != FeedbackType.Missed) {
-    this.type = FeedbackType.Incorrect
-  }
-}
-
-data class CompareResults(val c: Int = 0, val a: Int = 0) {
-  var correct: Int = c
-  var attempted: Int = a
-  var feedbackItems = mutableListOf<FeedbackItem>()
-
-  var finalResults = mutableListOf<IndividualNotePerformanceInfo>()
-}
+data class CompareResults(val correct: Int = 0, val attempted: Int = 0, val feedbackItems: Array<FeedbackItem>, val finalResults: Array<IndividualNotePerformanceInfo>)
 
 fun CompareResults.generateResultForDatabase(): ResultsForDatabase {
   val pitch = finalResults.map { it.idealPitch - it.actualPitch }.average()
@@ -39,7 +26,7 @@ fun CompareResults.generateResultForDatabase(): ResultsForDatabase {
     exerciseAveragePitch = pitch,
     exerciseAverageRhythm = rhythm,
     exerciseAverageDuration = duration,
-    notePerformances = finalResults.toTypedArray()
+    notePerformances = finalResults
   )
 }
 

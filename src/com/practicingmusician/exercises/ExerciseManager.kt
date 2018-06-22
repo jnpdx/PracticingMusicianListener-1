@@ -231,7 +231,6 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
         comparisonFlags = listenerApp.exercise.comparisonFlags
       )
 
-
       listenerApp.clearFeedbackItems()
 
       results.feedbackItems.forEach {

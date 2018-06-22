@@ -3,13 +3,13 @@ package com.practicingmusician
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.FeedbackItem
-import com.practicingmusician.finals.FeedbackMetric
-import com.practicingmusician.finals.FeedbackType
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
-import org.w3c.dom.*
+import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.get
 import kotlin.browser.document
-import kotlin.browser.window
 
 /**
  * Created by jn on 6/5/17.
@@ -317,6 +317,6 @@ public class ListenerApp {
   //add a feedback item to a certain beat
   fun addFeedbackItem(feedbackItem: FeedbackItem) {
     if (currentFeedbackItems.indexOf(feedbackItem) == -1) currentFeedbackItems += feedbackItem
-    this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type, feedbackItem.feedbackItemType.toTypedArray(), feedbackItem.beat)
+    this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type, feedbackItem.metrics, feedbackItem.beat)
   }
 }
