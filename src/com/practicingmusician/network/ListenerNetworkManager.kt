@@ -18,8 +18,6 @@ external val listenerApp: ListenerApp
 
 object ListenerNetworkManager {
 
-  val mapTest = mapOf("test" to 1, "test2" to 4)
-
   fun makePostRequest(urlString: String, data: PerformanceWrapper) {
     networkRequest(urlString, data) //call the javascript
   }
@@ -33,13 +31,14 @@ object ListenerNetworkManager {
     dbResults.tempo = UserSettings.tempo
     dbResults.isDefaultTempo = UserSettings.isDefaultTempo
 
+    //TODO: update this to send more values to the database
     dbResults.toleranceLevels = ToleranceLevels(
-      allowableCentsMargin = listenerApp.parameters.allowableCentsMargin,
-      allowableDurationRatio = listenerApp.parameters.allowableDurationRatio,
-      allowableRhythmMargin = listenerApp.parameters.allowableRhythmMargin,
-      largestBeatDifference = listenerApp.parameters.largestBeatDifference,
-      largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference,
-      minDurationInBeats = listenerApp.parameters.minDurationInBeats
+      allowableCentsMargin = listenerApp.parameters.tolerances.allowableCentsMargin.toInt(),
+      allowableDurationRatio = listenerApp.parameters.tolerances.allowableDurationRatio,
+      allowableRhythmMargin = listenerApp.parameters.tolerances.allowableRhythmMargin,
+      largestBeatDifference = -1.0,
+      largestDurationRatioDifference = -1.0,
+      minDurationInBeats = listenerApp.parameters.minimumSizes.minDurationInBeats
     )
 
     val performanceWrapper = PerformanceWrapper(performance = dbResults)

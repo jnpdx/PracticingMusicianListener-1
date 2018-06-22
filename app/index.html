@@ -91,6 +91,15 @@ span.paginationLink.pageBackward {
 
 
 
+
+
+
+
+
+
+
+
+
   </style>
 
 </head>
@@ -154,19 +163,36 @@ span.paginationLink.pageBackward {
 
             databaseEndpoint: "db",
 
-            allowableCentsMargin : 40,
-            allowableRhythmMargin : 0.40,
-            allowableDurationRatio : 0.40,
-
-            largestBeatDifference: 1.0,
-            largestDurationRatioDifference: 0.2,
-            minDurationInBeats: 0.1,
-
             comparisonFlags: {
               testPitch: true,
               testRhythm: true,
               testDuration: true
             },
+
+            minimumSizes : {
+              acceptableBeatDistance: 1.5,
+              minDurationInBeats: 0.2
+            },
+
+            factorWeights : {
+              rhythmFactor: 1.0,
+              noteFactor: 100.0,
+              durationFactor: 1.0
+            },
+
+            correctLevels : {
+              correctCentsMargin : 25.0,
+              correctRhythmMargin : 0.3,
+              correctDurationMargin : 0.5,
+              correctDurationInSeconds : 0.25
+            },
+
+            tolerances : {
+              allowableCentsMargin : 45.0,
+              allowableRhythmMargin : 0.4,
+              allowableDurationRatio : 0.6
+            },
+
 
             displaySiteDialog: function(params) {
               console.log(params)
@@ -178,6 +204,17 @@ span.paginationLink.pageBackward {
             },
         })
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

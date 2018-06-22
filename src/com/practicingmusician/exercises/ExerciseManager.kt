@@ -13,12 +13,6 @@ import com.practicingmusician.steppable.TimeKeeperAnalyzer
 
 external val listenerApp: ListenerApp
 
-val minimumSizes = MinimumSizes(acceptableBeatDistance = 1.5, minDurationInBeats = 0.2)
-val factorWeights = FactorWeights(rhythmFactor = 1.0, noteFactor = 100.0, durationFactor = 1.0)
-val correctLevels = CorrectLevels(correctCentsMargin = 25.0, correctRhythmMargin = 0.3, correctDurationMargin = 0.5, correctDurationInSeconds = 0.25)
-val tolerances = Tolerances(allowableCentsMargin = 45.0, allowableRhythmMargin = 0.4, allowableDurationRatio = 0.6)
-
-
 /**
  * Created by jn on 6/6/17.
  */
@@ -88,17 +82,20 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
       currentExercise?.let {
         pm_log("Comparing...")
 
+        val combinedComparisonFlags = ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.exercise.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration)
+
+
         //compare the notes array in the exercise to the notes that were converted from the sample buffer
         //val results = comparisonEngine.compareNoteArrays(combinedComparisonFlags, it.notes, notesFromSamplesBuffer)
         val results = runComparison(false,
           exerciseNotes = listenerApp.exercise.notes,
           sampleCollections = pitchTracker.samples.toTypedArray(),
           bpm = listenerApp.getTempo().toInt(),
-          minimumSizes = minimumSizes,
-          factorWeights = factorWeights,
-          correctLevels = correctLevels,
-          tolerances = tolerances,
-          comparisonFlags = listenerApp.exercise.comparisonFlags
+          minimumSizes = listenerApp.parameters.minimumSizes,
+          factorWeights = listenerApp.parameters.factorWeights,
+          correctLevels = listenerApp.parameters.correctLevels,
+          tolerances = listenerApp.parameters.tolerances,
+          comparisonFlags = combinedComparisonFlags
         )
 
         //get rid of the old feedback items on the screen
@@ -228,6 +225,8 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
       return
     }
 
+    val combinedComparisonFlags = ComparisonFlags(listenerApp.exercise.comparisonFlags.testPitch, listenerApp.exercise.comparisonFlags.testRhythm, listenerApp.parameters.comparisonFlags.testDuration)
+
     currentExercise?.let {
 
       pm_log("Samples length: " + pitchTracker.samples.count())
@@ -236,11 +235,11 @@ class ExerciseManager(am: AudioManager) : TimeKeeperAnalyzer {
         exerciseNotes = listenerApp.exercise.notes,
         sampleCollections = pitchTracker.samples.toTypedArray(),
         bpm = listenerApp.getTempo().toInt(),
-        minimumSizes = minimumSizes,
-        factorWeights = factorWeights,
-        correctLevels = correctLevels,
-        tolerances = tolerances,
-        comparisonFlags = listenerApp.exercise.comparisonFlags
+        minimumSizes = listenerApp.parameters.minimumSizes,
+        factorWeights = listenerApp.parameters.factorWeights,
+        correctLevels = listenerApp.parameters.correctLevels,
+        tolerances = listenerApp.parameters.tolerances,
+        comparisonFlags = combinedComparisonFlags
       )
 
       listenerApp.clearFeedbackItems()

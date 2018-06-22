@@ -63,19 +63,13 @@ interface AppSetupParameters {
   val audioAssetPath: String
 
   val comparisonFlags: ComparisonFlags
+  val minimumSizes: MinimumSizes
+  val factorWeights: FactorWeights
+  val correctLevels: CorrectLevels
+  val tolerances: Tolerances
 
   //path to the XML file to load
   val xmlUrl: String
-
-  //TODO: turn these back into val instead of var -- used for tolerance controls
-  //the margins in which a note can vary from the ideal and still be considered acceptable
-  var allowableCentsMargin: Int
-  var allowableRhythmMargin: Double
-  var allowableDurationRatio: Double
-
-  var largestDurationRatioDifference: Double
-  var largestBeatDifference: Double
-  var minDurationInBeats: Double
 
   val displaySiteDialog: (params: DialogParams) -> Unit
 
@@ -149,7 +143,7 @@ data class BeatPosition(val x: Double, val y: Double, val page: Int)
 //Comparison utility
 
 data class MinimumSizes(val acceptableBeatDistance: Double,
-                        val minDurationInBeats: Double)
+                        var minDurationInBeats: Double)
 
 data class FactorWeights(val rhythmFactor: Double,
                          val noteFactor: Double,
@@ -160,9 +154,9 @@ data class CorrectLevels(val correctCentsMargin: Double,
                          val correctDurationMargin: Double,
                          val correctDurationInSeconds: Double)
 
-data class Tolerances(val allowableCentsMargin: Double,
-                      val allowableRhythmMargin: Double,
-                      val allowableDurationRatio: Double)
+data class Tolerances(var allowableCentsMargin: Double,
+                      var allowableRhythmMargin: Double,
+                      var allowableDurationRatio: Double)
 
 external fun runComparison(
   isRunning: Boolean,

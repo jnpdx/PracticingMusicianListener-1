@@ -81,6 +81,9 @@ public class ListenerApp {
 
     this.parameters = parameters
 
+    console.log("paramters:")
+    console.log(this.parameters)
+
     loadXml(parameters.xmlUrl, { callbackData ->
 
       console.log("Callback:")
@@ -223,13 +226,11 @@ public class ListenerApp {
   @JsName("toggleState")
   fun toggleState() {
     //update the parameters
-    this.parameters.allowableCentsMargin = (document.getElementById("allowableCentsMargin") as HTMLInputElement).value.toInt()
-    this.parameters.allowableRhythmMargin = (document.getElementById("allowableRhythmMargin") as HTMLInputElement).value.toDouble()
-    this.parameters.allowableDurationRatio = (document.getElementById("allowableDurationRatio") as HTMLInputElement).value.toDouble()
+    this.parameters.tolerances.allowableCentsMargin = (document.getElementById("allowableCentsMargin") as HTMLInputElement).value.toDouble()
+    this.parameters.tolerances.allowableRhythmMargin = (document.getElementById("allowableRhythmMargin") as HTMLInputElement).value.toDouble()
+    this.parameters.tolerances.allowableDurationRatio = (document.getElementById("allowableDurationRatio") as HTMLInputElement).value.toDouble()
 
-    this.parameters.largestBeatDifference = (document.getElementById("largestBeatDifference") as HTMLInputElement).value.toDouble()
-    this.parameters.largestDurationRatioDifference = (document.getElementById("largestDurationRatioDifference") as HTMLInputElement).value.toDouble()
-    this.parameters.minDurationInBeats = (document.getElementById("minDurationInBeats") as HTMLInputElement).value.toDouble()
+    this.parameters.minimumSizes.minDurationInBeats = (document.getElementById("minDurationInBeats") as HTMLInputElement).value.toDouble()
 
 
 
