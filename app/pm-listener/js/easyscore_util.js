@@ -278,7 +278,7 @@ var EasyScoreUtil = function() {
 
     var versionNumber = document.createElement("span")
     versionNumber.id = "versionNumber"
-    versionNumber.innerHTML = 'v1.0b8'
+    versionNumber.innerHTML = 'v1.1b1'
     copyrightInfoContainer.appendChild(versionNumber)
 
 		//remove the old logo, if it exists
