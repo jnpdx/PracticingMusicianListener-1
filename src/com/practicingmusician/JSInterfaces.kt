@@ -157,7 +157,8 @@ data class FactorWeights(val rhythmFactor: Double,
 
 data class CorrectLevels(val correctCentsMargin: Double,
                          val correctRhythmMargin: Double,
-                         val correctDurationMargin: Double)
+                         val correctDurationMargin: Double,
+                         val correctDurationInSeconds: Double)
 
 data class Tolerances(val allowableCentsMargin: Double,
                       val allowableRhythmMargin: Double,

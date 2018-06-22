@@ -15,7 +15,7 @@ external val listenerApp: ListenerApp
 
 val minimumSizes = MinimumSizes(acceptableBeatDistance = 1.5, minDurationInBeats = 0.2)
 val factorWeights = FactorWeights(rhythmFactor = 1.0, noteFactor = 100.0, durationFactor = 1.0)
-val correctLevels = CorrectLevels(correctCentsMargin = 25.0, correctRhythmMargin = 0.3, correctDurationMargin = 0.5)
+val correctLevels = CorrectLevels(correctCentsMargin = 25.0, correctRhythmMargin = 0.3, correctDurationMargin = 0.5, correctDurationInSeconds = 0.25)
 val tolerances = Tolerances(allowableCentsMargin = 45.0, allowableRhythmMargin = 0.4, allowableDurationRatio = 0.6)
 
 
