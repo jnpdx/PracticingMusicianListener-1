@@ -1,12 +1,7 @@
 package com.practicingmusician.notes
 
 import com.practicingmusician.UserSettings
-import com.practicingmusician.finals.FeedbackMetric
-import com.practicingmusician.finals.listenerApp
-import com.practicingmusician.finals.throwSafeIncorrectSwitch
 import com.practicingmusician.global_transposition
-import com.practicingmusician.pm_log
-import kotlin.browser.window
 import kotlin.js.Math.abs
 import kotlin.js.Math.pow
 
@@ -25,7 +20,7 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
   val textValue = textVal
 
   //if this is a note generated from samples, the average frequency over the total duration of the note
-  var avgFreq: Double? = null
+  var freq: Double? = null
 
   //get the frequency based on the note number
   fun getFrequency(): Double {

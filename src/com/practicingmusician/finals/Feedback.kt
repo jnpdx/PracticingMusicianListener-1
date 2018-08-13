@@ -5,47 +5,33 @@ package com.practicingmusician.finals
  */
 
 //This is an individual metric (like Pitch or Duration) that gets sent to EasyScore
-data class FeedbackMetric(var name : String, var value : String)
+data class FeedbackMetric(val missed: Boolean, val type: String, val value: String, val amount: Double)
 
 enum class FeedbackType {
   Correct, Incorrect, Missed
 }
 
-data class FeedbackItem(var type : FeedbackType, var beat : Double, var feedbackItemType : List<FeedbackMetric>)
+data class FeedbackItem(val type: String, val beat: Double, var metrics: Array<FeedbackMetric>)
 
-//this will only change it to incorrect if it hasn't been marked as worse (missed)
-fun FeedbackItem.throwSafeIncorrectSwitch() {
-  if (this.type != FeedbackType.Missed) {
-    this.type = FeedbackType.Incorrect
-  }
+data class CompareResults(val correct: Int = 0, val attempted: Int = 0, val feedbackItems: Array<FeedbackItem>, val notePerformances: Array<IndividualNotePerformanceInfo>)
+
+fun CompareResults.generateResultForDatabase(): ResultsForDatabase {
+  val pitch = notePerformances.map { it.idealPitch - it.actualPitch }.average()
+  val rhythm = notePerformances.map { it.idealBeat - it.actualBeat }.average()
+  val duration = notePerformances.map { it.idealDuration - it.actualDuration }.average()
+
+  return ResultsForDatabase(
+    correct = this.correct,
+    attempted = this.attempted,
+    exerciseAveragePitch = pitch,
+    exerciseAverageRhythm = rhythm,
+    exerciseAverageDuration = duration,
+    notePerformances = notePerformances
+  )
 }
 
-class CompareResults(val c : Int = 0, val a : Int = 0) {
-    var correct : Int = c
-    var attempted : Int = a
-    var feedbackItems = mutableListOf<FeedbackItem>()
+data class ToleranceLevels(val allowableCentsMargin: Int, val allowableRhythmMargin: Double, val allowableDurationRatio: Double, val largestBeatDifference: Double, val largestDurationRatioDifference: Double, val minDurationInBeats: Double)
 
-    var finalResults = mutableListOf<IndividualNotePerformanceInfo>()
+data class ResultsForDatabase(var api_version: Int = 3, var userID: Int = -1, var exerciseID: Int = -1, var toleranceLevels: ToleranceLevels = ToleranceLevels(0, 0.0, 0.0, 0.0, 0.0, 0.0), var tempo: Double = -1.0, var isDefaultTempo: Boolean = true, val correct: Int, val attempted: Int, val exerciseAveragePitch: Double, val exerciseAverageRhythm: Double, val exerciseAverageDuration: Double, val notePerformances: Array<IndividualNotePerformanceInfo>)
 
-    fun generateResultForDatabase() : ResultsForDatabase {
-
-        val pitch = finalResults.map { it.idealPitch - it.actualPitch }.average()
-        val rhythm = finalResults.map { it.idealBeat - it.actualBeat }.average()
-        val duration = finalResults.map { it.idealDuration - it.actualDuration }.average()
-
-        return ResultsForDatabase(
-                correct = this.correct,
-                attempted =  this.attempted,
-                exerciseAveragePitch = pitch,
-                exerciseAverageRhythm = rhythm,
-                exerciseAverageDuration = duration,
-                notePerformances = finalResults.toTypedArray()
-        )
-    }
-}
-
-data class ToleranceLevels(val allowableCentsMargin : Int, val allowableRhythmMargin: Double, val allowableDurationRatio : Double, val largestBeatDifference : Double, val largestDurationRatioDifference : Double, val minDurationInBeats : Double )
-
-data class ResultsForDatabase(var api_version : Int = 2, var userID : Int = -1, var exerciseID : Int = -1, var toleranceLevels : ToleranceLevels = ToleranceLevels(0,0.0,0.0,0.0,0.0,0.0),var tempo : Double = -1.0, var isDefaultTempo : Boolean = true, val correct : Int, val attempted: Int, val exerciseAveragePitch : Double, val exerciseAverageRhythm: Double, val exerciseAverageDuration : Double, val notePerformances: Array<IndividualNotePerformanceInfo>)
-
-data class IndividualNotePerformanceInfo(val idealBeat: Double, val actualBeat: Double, val idealPitch : Double, val actualPitch: Double, val idealDuration: Double, val actualDuration : Double)
+data class IndividualNotePerformanceInfo(val idealBeat: Double, val actualBeat: Double, val idealPitch: Double, val actualPitch: Double, val idealDuration: Double, val actualDuration: Double)

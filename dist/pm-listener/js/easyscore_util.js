@@ -278,7 +278,7 @@ var EasyScoreUtil = function() {
 
     var versionNumber = document.createElement("span")
     versionNumber.id = "versionNumber"
-    versionNumber.innerHTML = 'v1.0b8'
+    versionNumber.innerHTML = 'v1.1b2'
     copyrightInfoContainer.appendChild(versionNumber)
 
 		//remove the old logo, if it exists
@@ -323,19 +323,15 @@ var EasyScoreUtil = function() {
  + '      <span class="toleranceLabel">allowableDurationRatio (0-1.0)</span><input type="text" id="allowableDurationRatio"/><br/>'
  + '      <br/>'
  + '      <br/>'
- + '      <span class="toleranceLabel">largestBeatDifference (0-1.0)</span><input type="text" id="largestBeatDifference"/><br/>'
- + '      <span class="toleranceLabel">largestDurationRatioDifference(0-1.0)</span><input type="text" id="largestDurationRatioDifference"/><br/>'
  + '      <span class="toleranceLabel">minDurationInBeats(0-1.0)</span><input type="text" id="minDurationInBeats"/><br/>'
 
     document.getElementById("notationWindow").insertBefore(toleranceDiv,document.getElementById('notationHeader'))
 
-    document.getElementById('allowableCentsMargin').value = listenerApp.parameters.allowableCentsMargin
-    document.getElementById('allowableRhythmMargin').value = listenerApp.parameters.allowableRhythmMargin
-    document.getElementById('allowableDurationRatio').value = listenerApp.parameters.allowableDurationRatio
+    document.getElementById('allowableCentsMargin').value = listenerApp.parameters.tolerances.allowableCentsMargin
+    document.getElementById('allowableRhythmMargin').value = listenerApp.parameters.tolerances.allowableRhythmMargin
+    document.getElementById('allowableDurationRatio').value = listenerApp.parameters.tolerances.allowableDurationRatio
 
-    document.getElementById('largestBeatDifference').value = listenerApp.parameters.largestBeatDifference
-    document.getElementById('largestDurationRatioDifference').value = listenerApp.parameters.largestDurationRatioDifference
-    document.getElementById('minDurationInBeats').value = listenerApp.parameters.minDurationInBeats
+    document.getElementById('minDurationInBeats').value = listenerApp.parameters.minimumSizes.minDurationInBeats
   }
 
 	this.setupControls = function() {
@@ -940,7 +936,6 @@ var EasyScoreUtil = function() {
         &&
         (noteId != this.noteToHighlight || Math.floor(beat) != this.beatToHighlight)
         ) {
-      	  console.log("draw " + beat)
       this.noteToHighlight = noteId
       this.beatToHighlight = Math.floor(beat)
 
@@ -999,14 +994,14 @@ var EasyScoreUtil = function() {
 		//console.log("Feedback type:")
 		//console.log(feedbackType.name$)
 
-		switch (feedbackType.name$) {
-		case "Missed":
+		switch (feedbackType) {
+		case "MISSED":
 			obj.className += " incorrect_note"
 			break
-		case "Incorrect":
+		case "INCORRECT":
 			obj.className += " off_note"
 			break
-		case "Correct":
+		case "CORRECT":
 			obj.className += " correct"
 			break
 		default:
@@ -1020,11 +1015,11 @@ var EasyScoreUtil = function() {
 
 			var keyObj = document.createElement("span")
 			keyObj.className = "feedbackKey"
-			keyObj.innerHTML = item.name
+			keyObj.innerHTML = item.type
 
 			var valueObj = document.createElement("span")
 			valueObj.className = "feedbackValue"
-			valueObj.innerHTML = item.value
+			valueObj.innerHTML = item.value // + ' ' + item.amount
 
 			itemObj.appendChild(keyObj)
 			itemObj.appendChild(valueObj)

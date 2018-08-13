@@ -4,13 +4,13 @@
 //MIDI Note numbers
 function generateMidiNoteNumbers() {
 	var noteLetters = [
-		{letter:"C",basePitch:24},
-		{letter:"D",basePitch:26},
-		{letter:"E",basePitch:28},
-		{letter:"F",basePitch:29},
-		{letter:"G",basePitch:31},
-		{letter:"A",basePitch:33},
-		{letter:"B",basePitch:35},
+		{letter:"C",basePitch:24 - 12},
+		{letter:"D",basePitch:26 - 12},
+		{letter:"E",basePitch:28 - 12},
+		{letter:"F",basePitch:29 - 12},
+		{letter:"G",basePitch:31 - 12},
+		{letter:"A",basePitch:33 - 12},
+		{letter:"B",basePitch:35 - 12},
 	]
 	var octavesToGenerate = [1, 2, 3, 4, 5, 6, 7]
 
@@ -145,6 +145,8 @@ var jsMusicXMLConverter = function() {
 
 		var comparisonFlags = {
 			testPitch: true,
+			testDuration: true,
+			testRhythm: true
 		}
 
 		if (isPercussionClef) {
@@ -815,3 +817,6 @@ var jsMusicXMLConverter = function() {
 		}
 	}
 }
+
+
+module.exports.converter = jsMusicXMLConverter

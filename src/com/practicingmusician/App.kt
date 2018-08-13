@@ -3,13 +3,13 @@ package com.practicingmusician
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.FeedbackItem
-import com.practicingmusician.finals.FeedbackMetric
-import com.practicingmusician.finals.FeedbackType
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
-import org.w3c.dom.*
+import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.get
 import kotlin.browser.document
-import kotlin.browser.window
 
 /**
  * Created by jn on 6/5/17.
@@ -22,6 +22,7 @@ external fun loadXml(url: String, callback: (String) -> Unit)
 
 public class ListenerApp {
 
+  @JsName("setTempoForTests")
   fun setTempoForTests(t: Double) {
     UserSettings.setTempo(t, true)
   }
@@ -44,6 +45,11 @@ public class ListenerApp {
     return UserSettings.tempo
   }
 
+  @JsName("createNotes")
+  fun createNotes() {
+    Note.createAllNotes()
+  }
+
   @JsName("getMetronomeAudio")
   fun getMetronomeAudio(): Boolean {
     return UserSettings.metronomeAudioOn
@@ -54,7 +60,7 @@ public class ListenerApp {
     console.log("Running with parameters:")
     console.log(parameters)
 
-    Note.createAllNotes()
+    this.createNotes()
 
     //audioAnalyzer.setupMedia()
 
@@ -74,6 +80,9 @@ public class ListenerApp {
   fun runApp(parameters: AppSetupParameters) {
 
     this.parameters = parameters
+
+    console.log("paramters:")
+    console.log(this.parameters)
 
     loadXml(parameters.xmlUrl, { callbackData ->
 
@@ -103,7 +112,7 @@ public class ListenerApp {
     this.scoreUtil = EasyScoreUtil()
 
 
-    Note.createAllNotes()
+    this.createNotes()
 
     audioAnalyzer.setupMedia()
 
@@ -217,13 +226,11 @@ public class ListenerApp {
   @JsName("toggleState")
   fun toggleState() {
     //update the parameters
-    this.parameters.allowableCentsMargin = (document.getElementById("allowableCentsMargin") as HTMLInputElement).value.toInt()
-    this.parameters.allowableRhythmMargin = (document.getElementById("allowableRhythmMargin") as HTMLInputElement).value.toDouble()
-    this.parameters.allowableDurationRatio = (document.getElementById("allowableDurationRatio") as HTMLInputElement).value.toDouble()
+    this.parameters.tolerances.allowableCentsMargin = (document.getElementById("allowableCentsMargin") as HTMLInputElement).value.toDouble()
+    this.parameters.tolerances.allowableRhythmMargin = (document.getElementById("allowableRhythmMargin") as HTMLInputElement).value.toDouble()
+    this.parameters.tolerances.allowableDurationRatio = (document.getElementById("allowableDurationRatio") as HTMLInputElement).value.toDouble()
 
-    this.parameters.largestBeatDifference = (document.getElementById("largestBeatDifference") as HTMLInputElement).value.toDouble()
-    this.parameters.largestDurationRatioDifference = (document.getElementById("largestDurationRatioDifference") as HTMLInputElement).value.toDouble()
-    this.parameters.minDurationInBeats = (document.getElementById("minDurationInBeats") as HTMLInputElement).value.toDouble()
+    this.parameters.minimumSizes.minDurationInBeats = (document.getElementById("minDurationInBeats") as HTMLInputElement).value.toDouble()
 
 
 
@@ -311,6 +318,6 @@ public class ListenerApp {
   //add a feedback item to a certain beat
   fun addFeedbackItem(feedbackItem: FeedbackItem) {
     if (currentFeedbackItems.indexOf(feedbackItem) == -1) currentFeedbackItems += feedbackItem
-    this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type, feedbackItem.feedbackItemType.toTypedArray(), feedbackItem.beat)
+    this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type, feedbackItem.metrics, feedbackItem.beat)
   }
 }

@@ -4,7 +4,7 @@ var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 
 gulp.on('stop', function() {  process.exit(0); });
-gulp.on('err', function() { 
+gulp.on('err', function() {
 	console.log("Error:")
 	console.log(err);
 	process.exit(1);
@@ -12,7 +12,8 @@ gulp.on('err', function() {
 
 
 gulp.task('compile_kotlin', [], function () {
-  return exec('kotlinc-js src -output tmp/PracticingMusician.js', function (err, stdout, stderr) {
+  //keep in mind, this can't have -module-kind commonjs for actual site
+  return exec('kotlinc-js src -output tmp/PracticingMusician.js -module-kind commonjs', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   	return gulp.src('tmp/PracticingMusician.js')

@@ -3,8 +3,6 @@ package com.practicingmusician
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 import com.practicingmusician.steppable.TimeKeeperSteppable
-import org.w3c.dom.HTMLElement
-import kotlin.browser.document
 import kotlin.browser.window
 
 /**
@@ -59,7 +57,7 @@ class Tuner constructor() : TimeKeeperSteppable {
     val noteWithDiff = Note.closestNoteWithDiff(correlatedFrequency)
 
     var tunerString = ""
-    noteWithDiff.note?.noteName().let {
+    noteWithDiff.note.noteName().let {
       if (it != "NaN") {
 
         if (noteWithDiff.tuningDirection == 1) {

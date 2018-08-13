@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Practicing Musician</title>
+  <meta charset="UTF-8">
+  <title>Practicing Musician</title>
 
-    <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
+  <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
 
-    <script src="pm-listener/js/local_copies/jquery.js"></script>
-    <!--<script src="pm-listener/js/local_copies/vexflow.js"></script>-->
-    <script src="https://unpkg.com/vexflow@1.2.84/releases/vexflow-debug.js"></script>
+  <script src="pm-listener/js/local_copies/jquery.js"></script>
+  <!--<script src="pm-listener/js/local_copies/vexflow.js"></script>-->
+  <script src="https://unpkg.com/vexflow@1.2.84/releases/vexflow-debug.js"></script>
 
-    <script type="text/javascript" src="pm-listener/js/logger.js"></script>
+  <script type="text/javascript" src="pm-listener/js/logger.js"></script>
 
-    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
-    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
+  <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
+  <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
 
-    <script src="pm-listener/js/aubio.js"></script>
-    <script src="pm-listener/js/audio.js"></script>
+  <script src="pm-listener/js/aubio.js"></script>
+  <script src="pm-listener/js/audio.js"></script>
 
-    <script src="pm-listener/js/easyscore_util.js"></script>
+  <script src="pm-listener/js/utilityForListener.js"></script>
 
-    <script src="pm-listener/js/index.js"></script>
+  <script src="pm-listener/js/easyscore_util.js"></script>
 
-    <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
+  <script src="pm-listener/js/index.js"></script>
+
+  <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
 
 
-
-    <style>
+  <style>
       /* override CSS for the SASS code */
 div.feedbackItem.incorrect_note {
     background-image: url("pm-listener/images/miss-icon.svg");
@@ -84,7 +85,15 @@ span.paginationLink.pageBackward {
     background-image: url("pm-listener/images/medal-bronze-icon.svg");
 }
 
-    </style>
+
+
+
+
+
+
+
+
+  </style>
 
 </head>
 <body>
@@ -93,40 +102,41 @@ span.paginationLink.pageBackward {
 
 
 <div id="notationWindow">
-    <div id="notationHeader">
+  <div id="notationHeader">
 
-      	<img id="medalIndicator" />
-        <span id="tuner">Tuner</span>
-        <img src="pm-listener/images/blank.svg" id="playPauseButton" class="stopped" onclick="listenerApp.toggleState()" title="Play/Stop/Repeat"/>
-        <img src="pm-listener/images/blank.svg" id="metronomeAudioButton" title="Metronome Audio On/Off"/>
-
-
-        <div id="controlsContainer">
+    <img id="medalIndicator"/>
+    <span id="tuner">Tuner</span>
+    <img src="pm-listener/images/blank.svg" id="playPauseButton" class="stopped" onclick="listenerApp.toggleState()"
+         title="Play/Stop/Repeat"/>
+    <img src="pm-listener/images/blank.svg" id="metronomeAudioButton" title="Metronome Audio On/Off"/>
 
 
-	        <div id="listenerControls">
-            <div id="metronomeAndSlider">
-              <div id="metronomeContainer">
-              </div>
-              <div id="sliderContainer">
-                <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0" />
-                <div id="sliderNumbers">
-                </div>
-              </div>
+    <div id="controlsContainer">
+
+
+      <div id="listenerControls">
+        <div id="metronomeAndSlider">
+          <div id="metronomeContainer">
+          </div>
+          <div id="sliderContainer">
+            <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0"/>
+            <div id="sliderNumbers">
             </div>
-
-	          <input id="tempoMarking" type="text"></input>
-            <span id="tempoMarkingMeta">BPM</span>
           </div>
         </div>
 
-        <img src="pm-listener/images/blank.svg" id="printButton" title="Print"/>
-
+        <input id="tempoMarking" type="text"></input>
+        <span id="tempoMarkingMeta">BPM</span>
+      </div>
     </div>
 
-    <div id="notationBody">
-        <!-- this gets filled dynamically -->
-    </div>
+    <img src="pm-listener/images/blank.svg" id="printButton" title="Print"/>
+
+  </div>
+
+  <div id="notationBody">
+    <!-- this gets filled dynamically -->
+  </div>
 </div>
 <script type="text/javascript">
     window.onload = function() {
@@ -146,19 +156,34 @@ span.paginationLink.pageBackward {
 
             databaseEndpoint: "db",
 
-            allowableCentsMargin : 40,
-            allowableRhythmMargin : 0.40,
-            allowableDurationRatio : 0.40,
-
-            largestBeatDifference: 1.0,
-            largestDurationRatioDifference: 0.2,
-            minDurationInBeats: 0.1,
-
             comparisonFlags: {
-              testPitch: true,
-              testRhythm: true,
               testDuration: true
             },
+
+            minimumSizes : {
+              acceptableBeatDistance: 1.5,
+              minDurationInBeats: 0.2
+            },
+
+            factorWeights : {
+              rhythmFactor: 1.0,
+              noteFactor: 100.0,
+              durationFactor: 1.0
+            },
+
+            correctLevels : {
+              correctCentsMargin : 25.0,
+              correctRhythmMargin : 0.3,
+              correctDurationMargin : 0.5,
+              correctDurationInSeconds : 0.25
+            },
+
+            tolerances : {
+              allowableCentsMargin : 45.0,
+              allowableRhythmMargin : 0.4,
+              allowableDurationRatio : 0.6
+            },
+
 
             displaySiteDialog: function(params) {
               console.log(params)
@@ -170,30 +195,41 @@ span.paginationLink.pageBackward {
             },
         })
     }
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
-<div id="note-meter" class="note-meter">
-  <div id="tunerNeedle" class="needle animatedNeedle"></div>
+<!--<div id="note-meter" class="note-meter">-->
+<!--<div id="tunerNeedle" class="needle animatedNeedle"></div>-->
 
-  <p class='flat'>♭</p>
-  <ul>
+<!--<p class='flat'>♭</p>-->
+<!--<ul>-->
 
-    <li><p>-50</p></li>
-    <li><p>-40</p></li>
-    <li><p>-30</p></li>
-    <li><p>-20</p></li>
-    <li><p>-10</p></li>
-    <li><p>0</p></li>
-    <li><p>10</p></li>
-    <li><p>20</p></li>
-    <li><p>30</p></li>
-    <li><p>40</p></li>
-    <li><p>50</p></li>
+<!--<li><p>-50</p></li>-->
+<!--<li><p>-40</p></li>-->
+<!--<li><p>-30</p></li>-->
+<!--<li><p>-20</p></li>-->
+<!--<li><p>-10</p></li>-->
+<!--<li><p>0</p></li>-->
+<!--<li><p>10</p></li>-->
+<!--<li><p>20</p></li>-->
+<!--<li><p>30</p></li>-->
+<!--<li><p>40</p></li>-->
+<!--<li><p>50</p></li>-->
 
-  </ul>
-  <p class="sharp">#</p>
-  <div id="tuner_note_label">G#</div>
-</div>
+<!--</ul>-->
+<!--<p class="sharp">#</p>-->
+<!--<div id="tuner_note_label">G#</div>-->
+<!--</div>-->
 
 </body>
 </html>
