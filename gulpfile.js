@@ -13,7 +13,8 @@ gulp.on('err', function() {
 
 gulp.task('compile_kotlin', [], function () {
   //keep in mind, this can't have -module-kind commonjs for actual site
-  return exec('kotlinc-js src -output tmp/PracticingMusician.js -module-kind commonjs', function (err, stdout, stderr) {
+	//  return exec('kotlinc-js src -output tmp/PracticingMusician.js -module-kind commonjs', function (err, stdout, stderr) {
+  return exec('kotlinc-js src -output tmp/PracticingMusician.js', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
   	return gulp.src('tmp/PracticingMusician.js')
