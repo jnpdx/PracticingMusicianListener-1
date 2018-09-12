@@ -819,4 +819,6 @@ var jsMusicXMLConverter = function() {
 }
 
 
-module.exports.converter = jsMusicXMLConverter
+
+//USE THIS FOR TESTING FRAMEWORK
+//module.exports.converter = jsMusicXMLConverter

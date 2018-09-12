@@ -12,6 +12,7 @@ gulp.on('err', function() {
 
 
 gulp.task('compile_kotlin', [], function () {
+	////USE THIS FOR TESTING FRAMEWORK
   //keep in mind, this can't have -module-kind commonjs for actual site
 	//  return exec('kotlinc-js src -output tmp/PracticingMusician.js -module-kind commonjs', function (err, stdout, stderr) {
   return exec('kotlinc-js src -output tmp/PracticingMusician.js', function (err, stdout, stderr) {

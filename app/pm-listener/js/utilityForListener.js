@@ -558,13 +558,15 @@ function runComparison(
     }
 }
 
-module.exports = {
-    convertNotesToLandmarks,
-    convertSampleCollectionsToLandmarks,
-    compareLandmarkArrays,
-    conjoinSampleCollections,
-    addNoteDataToSampleCollection,
-    findBestMatch,
-    generateFeedbackFromMatch,
-    runComparison,
-}
+//USE THIS FOR TESTING FRAMEWORK
+//    module.exports = {
+//        convertNotesToLandmarks,
+//        convertSampleCollectionsToLandmarks,
+//        compareLandmarkArrays,
+//        conjoinSampleCollections,
+//        addNoteDataToSampleCollection,
+//        findBestMatch,
+//        generateFeedbackFromMatch,
+//        runComparison,
+//    }
+

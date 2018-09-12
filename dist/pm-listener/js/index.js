@@ -1,5 +1,5 @@
 
-var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
+var listenerApp = new PracticingMusicianListener.com.practicingmusician.ListenerApp()
 
 //Resizing code
 var resizeTimeoutID;
