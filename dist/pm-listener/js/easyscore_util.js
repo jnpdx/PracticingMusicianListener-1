@@ -1061,6 +1061,10 @@ var EasyScoreUtil = function() {
 
 var currentAnimation = null;
 function placeTuner(centsDifferent) {
+  if (document.getElementById('note-meter') == null) {
+    return;
+  }
+
   var meterWidth = document.getElementById('note-meter').offsetWidth
   var tunerPosition = (centsDifferent > 0 ?
     (50 - (50 - 4.5) * (centsDifferent / -50))
