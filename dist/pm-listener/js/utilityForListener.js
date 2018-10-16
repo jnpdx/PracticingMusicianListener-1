@@ -222,7 +222,7 @@ function generateFeedbackFromMatch(
             feedbackItems.push({
                 missed: true,
                 type: 'PITCH',
-                value: 'WRONG NOTE',
+                value: noteName(testItem.differences.note), //wrong note
                 amount: noteName(testItem.differences.note),
             })
         } else {
