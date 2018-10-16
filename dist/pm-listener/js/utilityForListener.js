@@ -182,13 +182,13 @@ function generateFeedbackFromMatch(
     correctLevels,
     tolerances
 ) {
-  console.log("---feedback")
     const feedbackItems = []
 
     //it's a rest, let's not sweat the details
     if (
-        (landmark.noteNumber == -1 && testItem == undefined) ||
-        (landmark.noteNumber == -1 && testItem.noteNumber == -1)
+        landmark.noteNumber == -1
+        //(landmark.noteNumber == -1 && testItem == undefined) ||
+        //(landmark.noteNumber == -1 && testItem.noteNumber == -1)
     ) {
         return feedbackItems
     }
