@@ -222,7 +222,7 @@ function generateFeedbackFromMatch(
             feedbackItems.push({
                 missed: true,
                 type: 'PITCH',
-                value: noteName(testItem.differences.note), //wrong note
+                value: noteName(testItem.noteNumber), //wrong note
                 amount: noteName(testItem.differences.note),
             })
         } else {
@@ -260,7 +260,7 @@ function generateFeedbackFromMatch(
                 missed:
                     ratioDifference > 1.0 + tolerances.allowableDurationRatio ||
                     ratioDifference < 1.0 - tolerances.allowableDurationRatio,
-                type: 'DURATION' + noteName(testItem.noteNumber),
+                type: 'DURATION',
                 value: ratioDifference > 1.0 ? 'LONG' : 'SHORT',
                 amount: ratioDifference,
             })
