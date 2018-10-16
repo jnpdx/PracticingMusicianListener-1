@@ -182,6 +182,7 @@ function generateFeedbackFromMatch(
     correctLevels,
     tolerances
 ) {
+  console.log("---feedback")
     const feedbackItems = []
 
     //it's a rest, let's not sweat the details
