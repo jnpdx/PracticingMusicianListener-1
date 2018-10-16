@@ -260,7 +260,7 @@ function generateFeedbackFromMatch(
                 missed:
                     ratioDifference > 1.0 + tolerances.allowableDurationRatio ||
                     ratioDifference < 1.0 - tolerances.allowableDurationRatio,
-                type: 'DURATION',
+                type: 'DURATION' + noteName(testItem.differences.note),
                 value: ratioDifference > 1.0 ? 'LONG' : 'SHORT',
                 amount: ratioDifference,
             })
