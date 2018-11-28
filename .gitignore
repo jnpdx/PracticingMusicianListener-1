@@ -11,3 +11,7 @@ node_modules/
 app/pm-listener/xml/Finals/*
 app/pm-listener/xml/Alto Finals/*
 .DS_Store
+.cache/
+wav_files/
+babel_dist/
+dist/
