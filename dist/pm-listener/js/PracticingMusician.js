@@ -1728,12 +1728,15 @@ var PracticingMusician = function (_, Kotlin) {
       return -1;
     return this.closestNoteToFrequency_14dthe$(frequency);
   };
+  var Math_0 = Math;
   Note$Companion.prototype.getFrequencyForNoteNumber_za3lpa$ = function (noteNumber) {
     if (noteNumber === -1) {
       return -1.0;
     }
     var A440_NoteNumber = 69.0;
-    var equalTemperamentPitch = UserSettings_getInstance().pitch * Math.pow(2.0, (noteNumber - A440_NoteNumber) / 12.0);
+    var tmp$ = UserSettings_getInstance().pitch;
+    var x = noteNumber - A440_NoteNumber / 12.0;
+    var equalTemperamentPitch = tmp$ * Math_0.pow(2.0, x);
     return equalTemperamentPitch;
   };
   Note$Companion.prototype.createAllNotes = function () {
@@ -1749,7 +1752,8 @@ var PracticingMusician = function (_, Kotlin) {
     tmp$ = ALL_NOTES.iterator();
     while (tmp$.hasNext()) {
       var note = tmp$.next();
-      var diff = Math.abs(note.getFrequency() - frequency);
+      var x = note.getFrequency() - frequency;
+      var diff = Math_0.abs(x);
       if (diff < closestFrequency) {
         closestFrequency = diff;
         closestNoteValue = note.noteNumber;
@@ -1819,7 +1823,8 @@ var PracticingMusician = function (_, Kotlin) {
     tmp$ = ALL_NOTES.iterator();
     while (tmp$.hasNext()) {
       var note = tmp$.next();
-      var diff = Math.abs(note.getFrequency() - frequency);
+      var x = note.getFrequency() - frequency;
+      var diff = Math_0.abs(x);
       if (diff < closestFrequency) {
         closestFrequency = diff;
         closestNote = note;

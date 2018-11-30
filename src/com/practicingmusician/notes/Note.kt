@@ -2,8 +2,8 @@ package com.practicingmusician.notes
 
 import com.practicingmusician.UserSettings
 import com.practicingmusician.global_transposition
-import kotlin.js.Math.abs
-import kotlin.js.Math.pow
+import kotlin.math.abs
+import kotlin.math.pow
 
 /**
  * Created by jn on 6/6/17.
@@ -62,7 +62,8 @@ class Note(value: Int, dur: Double, textVal: String = "none") {
         return -1.0
       }
       val A440_NoteNumber: Double = 69.0
-      val equalTemperamentPitch = UserSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
+
+      val equalTemperamentPitch = UserSettings.pitch * (2.0).pow(noteNumber.toDouble() - A440_NoteNumber / 12.0)
       return equalTemperamentPitch
     }
 
