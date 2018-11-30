@@ -1127,9 +1127,9 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-kotlin@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/kotlin/-/kotlin-1.1.0.tgz#32d08fa29c5302fc5986467e8cc37447ecb252e7"
+kotlin@1.2.61:
+  version "1.2.61"
+  resolved "https://registry.yarnpkg.com/kotlin/-/kotlin-1.2.61.tgz#2e7983593f717f86143cf51c61d394321b9cfc03"
 
 lcid@^1.0.0:
   version "1.0.0"

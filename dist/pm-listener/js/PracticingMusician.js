@@ -133,6 +133,7 @@ var PracticingMusician = function (_, Kotlin) {
       var json = converter.convertXMLToJSON(callbackData);
       console.log('JSON:');
       var jsCode = converter.convertJSON(json);
+      this$ListenerApp.parameters.comparisonFlags = jsCode.easyScoreInfo.comparisonFlags;
       this$ListenerApp.exercise = jsCode.easyScoreInfo;
       this$ListenerApp.finishRunApp_pjzheq$(closure$parameters);
       return Unit;

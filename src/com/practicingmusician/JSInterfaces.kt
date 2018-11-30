@@ -62,7 +62,7 @@ interface AppSetupParameters {
   //directory in which audio assets are stored
   val audioAssetPath: String
 
-  val comparisonFlags: ComparisonFlags
+  var comparisonFlags: ComparisonFlags
   val minimumSizes: MinimumSizes
   val factorWeights: FactorWeights
   val correctLevels: CorrectLevels

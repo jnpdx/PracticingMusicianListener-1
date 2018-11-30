@@ -97,6 +97,8 @@ public class ListenerApp {
 
       val jsCode = converter.convertJSON(json)
 
+      this.parameters.comparisonFlags = jsCode.easyScoreInfo.comparisonFlags
+
       this.exercise = jsCode.easyScoreInfo
 
       this.finishRunApp(parameters)
@@ -110,7 +112,6 @@ public class ListenerApp {
     this.exerciseManager = ExerciseManager(audioManager)
 
     this.scoreUtil = EasyScoreUtil()
-
 
     this.createNotes()
 
