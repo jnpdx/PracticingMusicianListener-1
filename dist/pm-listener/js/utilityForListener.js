@@ -210,7 +210,7 @@ function generateFeedbackFromMatch(
     if (restVsNote) {
         feedbackItems.push({
             missed: true,
-            type: 'PITCH',
+            type: 'NOTE',
             value: 'Not played',
             amount: testItem.differences.note,
         })
