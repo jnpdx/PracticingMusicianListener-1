@@ -151,6 +151,7 @@ var jsMusicXMLConverter = function() {
 
 		if (isPercussionClef) {
 			comparisonFlags.testPitch = false
+			comparisonFlags.testDuration = false
 		}
 
     //IGNORE DURATION ON SPECIFIC INSTRUMENTS
