@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/PracticingMusicianListener.iml" filepath="$PROJECT_DIR$/.idea/PracticingMusicianListener.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PracticingMusicianListener.iml" filepath="$PROJECT_DIR$/PracticingMusicianListener.iml" />
+    </modules>
+  </component>
+</project>
